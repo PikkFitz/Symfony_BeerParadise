@@ -1,0 +1,17 @@
+.pre-footer
+{
+    height: 3rem;
+}
+  
+.footer
+{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /*height: 10rem; */          /* Hauteur du pied-de-page */
+}
+
+.test
+{
+    max-height: 30px;
+}
