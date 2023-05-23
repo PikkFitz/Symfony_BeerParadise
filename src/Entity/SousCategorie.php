@@ -2,15 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\SousCategorieRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SousCategorieRepository;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SousCategorieRepository::class)]
-#[UniqueEntity('name')]  // Le nom doit être UNIQUE
+#[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
+#[UniqueEntity('name')]  // Le nom doit être UNIQUE,  nécéssite le use "UniqueEntity"
 class SousCategorie
 {
     #[ORM\Id]
@@ -23,13 +27,17 @@ class SousCategorie
     #[Assert\NotBlank()]
     private ?string $nom = null;
 
+    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]  // Car ne doit pas être vide
+    private ?string $description = null;
+
     #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Length(min: 2, max: 100)]
     private ?string $imageName = null;
 
-    // #[ORM\ManyToOne(inversedBy: 'sousCategories')]
-    // #[ORM\JoinColumn(nullable: false)]
-    // private ?Categorie $categorie = null;
+    #[ORM\ManyToOne(inversedBy: 'sousCategories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categorie $categorie = null;
 
     #[ORM\OneToMany(mappedBy: 'sousCategorie', targetEntity: Produit::class)]
     #[Assert\NotNull()]  // Ne doit pas être nul
@@ -53,6 +61,12 @@ class SousCategorie
         $this->updatedAt = new \DateTimeImmutable();
     }
 
+    #[ORM\PrePersist()]
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -66,6 +80,18 @@ class SousCategorie
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

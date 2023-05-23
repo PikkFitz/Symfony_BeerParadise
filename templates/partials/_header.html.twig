@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-1">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ path('home.index') }}">BeerParadise<sup>© </sup><i class="fa-solid fa-beer-mug-empty" style="color: #ff006f;"></i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,17 +7,10 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{ path('home.index') }}">Accueil
-                        <span class="visually-hidden">(current)</span>
-                    </a>
+                    <a class="nav-link" href="{{ path('home.index') }}">Accueil</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Boutique</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('categorie.index') }}">Boutique</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('about.index') }}">A propos</a>

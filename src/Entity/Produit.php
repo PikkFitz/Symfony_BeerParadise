@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
+#[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
 class Produit
 {
     #[ORM\Id]
@@ -32,7 +33,7 @@ class Produit
     private ?string $imageFile = null;
 
     #[ORM\Column]
-    // #[Assert\NotNull()]  // Car ne doit pas être nul
+    #[Assert\NotNull()]  // Car ne doit pas être nul
     #[Assert\Positive()]  // Doit être positif
     #[Assert\LessThan(1000)]  // Doit être inférieur à 1000
     private ?float $prix = null;
@@ -42,10 +43,10 @@ class Produit
     #[Assert\Positive()]  // Doit être positif
     private ?int $stock = null;
 
-    // #[ORM\ManyToOne(inversedBy: 'produits')]
-    // #[ORM\JoinColumn(nullable: false)]
-    // #[Assert\NotNull()]  // Car ne doit pas être nul
-    // private ?SousCategorie $sousCategorie = null;
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull()]  // Car ne doit pas être nul
+    private ?SousCategorie $sousCategorie = null;
 
     #[ORM\Column]
     #[Assert\NotNull()]  // Ne doit pas être nul
@@ -61,6 +62,12 @@ class Produit
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[ORM\PrePersist()]
+    public function setUpdatedAtValue()
+    {
         $this->updatedAt = new \DateTimeImmutable();
     }
 

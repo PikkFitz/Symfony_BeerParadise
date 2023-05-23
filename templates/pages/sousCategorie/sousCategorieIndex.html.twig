@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}BeerPardise - Produits {# Mettre le nom de la sous-catégorie #} {% endblock %} 
+{% block title %}BeerPardise - {{ categorie.nom }} {% endblock %} 
 
 {% block body %}
 
     <div class="container mt-4">
-        <h1>Nos bières {{ sousCategorie.nom }}</h1>
+        <h1>Nos bières {{ categorie.nom }}</h1>
 
         <form>
             <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
@@ -13,13 +13,13 @@
     
         <div class="d-flex justify-content-around flex-wrap">
 
-            {% for produit in produits %}
+            {% for sousCategorie in sousCategories %}
                 <div class="card border-light mt-3 mx-2" style="max-width: 30%;">
                     <div class="card-header bg-primary">BeerParadise<sup>© </sup><i class="fa-solid fa-beer-mug-empty" style="color: #ff006f;"></i></div>
                     <div class="card-body">
                         <h4 class="card-title">
-                            <a href="{{ path('produit.show', {produit: produit.id}) }}" class="text-light">
-                                {{ produit.nom }}
+                            <a href="{{ path('produit.index', {sousCategorie: sousCategorie.id}) }}" class="text-light">
+                                {{ sousCategorie.nom }}
                             </a>
                         </h4>
                         {# !!!!!  IMAGE  !!!!! #}

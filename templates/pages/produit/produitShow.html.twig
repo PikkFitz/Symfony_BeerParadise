@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+{% block title %}BeerParadise - {{ produit.nom }} {% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <h1 class="mt-4">{{ produit.nom }}</h1>
+
+        <div class="mt-4">
+            {% if produit.sousCategorie %}
+                <p><strong> Type : </strong>{{ produit.sousCategorie.nom }}</p>
+            {% else %}
+                <p><strong> Type : </strong>non renseigné</p>
+            {% endif %}
+        </div>
+
+        <div class="mt-4">
+            {% if produit.prix %}
+                <p><strong> Prix : </strong>{{ produit.prix }}€</p>
+            {% else %}
+                <p><strong> Prix : </strong>non renseigné</p>
+            {% endif %}
+        </div>
+
+        {# <div class="recipe_image mt-2">
+            <img style="max-width: 25%" src="{{ vich_uploader_asset(recipe, 'imageFile') }}">
+        </div> #}
+
+        <div class="mt-4">
+            {% if produit.description %}
+                <p><strong> Description : </strong>{{ produit.description|raw }}</p>
+            {% else %}
+                <p><strong> Description : </strong>non renseignée</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\CategorieRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
-#[UniqueEntity('name')]  // Le nom doit être UNIQUE
+#[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
+#[UniqueEntity('name')]  // Le nom doit être UNIQUE,  nécéssite le use "UniqueEntity"
 class Categorie
 {
     #[ORM\Id]
@@ -22,6 +25,10 @@ class Categorie
     #[Assert\Length(min: 2, max: 100)]
     #[Assert\NotBlank()]
     private ?string $nom = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]  // Car ne doit pas être vide
+    private ?string $description = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Length(min: 2, max: 100)]
@@ -49,6 +56,12 @@ class Categorie
         $this->updatedAt = new \DateTimeImmutable();
     }
 
+    #[ORM\PrePersist()]
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +75,18 @@ class Categorie
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
