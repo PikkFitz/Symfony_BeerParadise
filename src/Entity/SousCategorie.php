@@ -24,11 +24,11 @@ class SousCategorie
 
     #[ORM\Column(length: 100)]
     #[Assert\Length(min: 2, max: 100)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank()]  // Car ne doit pas être vide
+    #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
     private ?string $description = null;
 
     #[ORM\Column(length: 100, nullable: true)]

@@ -18,12 +18,12 @@ class Produit
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank()]  // Car ne doit pas être vide
+    #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
     #[Assert\Length(min: 2, max: 100)]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank()]  // Car ne doit pas être vide
+    #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
