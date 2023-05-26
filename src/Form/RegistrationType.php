@@ -22,6 +22,7 @@ class RegistrationType extends AbstractType
             ->add('nom', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
+                    'placeholder' => 'Saisir votre prénom et votre nom',
                     'minlength' => '2',
                     'maxlength' => '50',
                 ],
@@ -38,6 +39,7 @@ class RegistrationType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control',
+                    'placeholder' => 'Saisir votre adresse mail',
                     'minlength' => '2',
                     'maxlength' => '180'
                 ],
@@ -56,20 +58,28 @@ class RegistrationType extends AbstractType
                 'type' => PasswordType::class,
                 'first_options' => [
                     'attr' => [
-                        'class' => 'form-control'
+                        'class' => 'form-control',
+                        'placeholder' => 'Choisir un mot de passe',
                     ],
                     'label' => 'Mot de passe',
                     'label_attr' => [
                         'class' => 'form-label mt-4'
+                    ],
+                    'constraints' => [
+                        new Assert\NotBlank()
                     ]
                 ],
                 'second_options' => [
                     'attr' => [
-                        'class' => 'form-control'
+                        'class' => 'form-control',
+                        'placeholder' => 'Confirmer votre mot de passe',
                     ],
                     'label' => 'Confirmation du mot de passe',
                     'label_attr' => [
                         'class' => 'form-label mt-4'
+                    ],
+                    'constraints' => [
+                        new Assert\NotBlank()
                     ]
                 ],
                 'invalid_message' => 'Les mots de passe ne correspondent pas'  // Message si les mdp 1 et 2 ne sont pas identiques

@@ -5,6 +5,13 @@
 {% block body %}
 <div class="container mt-4">
 
+    {# !!!!! MESSAGE FLASH !!!!! #}
+    {% for message in app.flashes('success') %}          {# success = Nom de l'alerte  #}
+        <div class="alert alert-success mt-4">           {# alert-sucess = Type d'alerte Bootstrap #}
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <div class="jumbotron">
         <h1 class="display-4">Bienvenue sur BeerParadise !</h1>
         <p class="lead">BeerParadise est, comme son nom l'indique, le paradis de la bière ! Ici, tu trouveras forcement une bière (ou plusieurs... <i class="fa-solid fa-face-smile-wink"></i>) à ton gout !!! <br>

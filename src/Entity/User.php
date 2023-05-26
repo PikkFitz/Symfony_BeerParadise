@@ -33,12 +33,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Assert\NotNull()]
     private array $roles = [];
-
+    
     private ?string $plainPassword = null;
    
     #[ORM\Column]
     #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
-    private ?string $password = null;  // Voir src/EntityListener/UserListener.php pour le hashage du mdp
+    private ?string $password = 'password';  // Voir src/EntityListener/UserListener.php pour le hashage du mdp
 
     #[ORM\Column]
     #[Assert\NotNull()]
@@ -53,6 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function __construct()
     {
+        $this->roles = ['ROLE_USER'];
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
