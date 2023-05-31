@@ -17,8 +17,15 @@
         <p class="lead">BeerParadise est, comme son nom l'indique, le paradis de la bière ! Ici, tu trouveras forcement une bière (ou plusieurs... <i class="fa-solid fa-face-smile-wink"></i>) à ton gout !!! <br>
          Donc n'hésite pas à consulter notre boutique et à t'inscrire sur notre site, si tu ne fais pas encore parti de notre communauté de passionnés... </p>
         <hr class="my-3">
-        <p>Pour les inscriptions, c'est par ici : </p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Inscription</a>
+        {% if app.user %} {# Si l'utilisateur est connecté #}
+            <p>Une petite mousse ? C'est par ici : </p>
+            <a class="btn btn-primary btn-lg" href="{{ path('categorie.index') }}" role="button">Boutique</a>
+        {% else %} {# Si l'utilisateur n'est pas connecté #}
+            <p>Pour nous rejoindre, c'est par ici : </p>
+            <a class="btn btn-primary btn-lg mx-1" href="{{ path('security.registration') }}" role="button">Inscription</a>
+            <a class="btn btn-primary btn-lg" href="{{ path('security.login') }}" role="button">Connexion</a>
+        {% endif %}
+
     </div>
 
     <div class="mt-4">

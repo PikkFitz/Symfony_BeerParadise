@@ -7,24 +7,16 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('home.index') }}">Accueil</a>
+                    <a class="nav-link mx-1" href="{{ path('home.index') }}">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('categorie.index') }}">Boutique</a>
+                    <a class="nav-link mx-1" href="{{ path('categorie.index') }}">Boutique</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('about.index') }}">A propos</a>
+                    <a class="nav-link mx-1" href="{{ path('about.index') }}">A propos</a>
                 </li>
-               
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link mx-1" href="{{ path('contact.index') }}">Nous contacter</a>
                 </li>
             </ul>
 
@@ -33,15 +25,41 @@
                     <button class="btn btn-secondary my-2 my-sm-0 d-flex justify-content-center align-items-center" type="submit">Search</button>
             </form>
             
+            
             <div class="d-flex mx-1">
                 <ul class="navbar-nav me-auto">
-                
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('security.login') }}">Connexion</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('security.registration') }}">Inscription</a>
-                    </li>
+
+                    {% if app.user %} {# Si l'utilisateur est connecté #}
+
+                        <li class="nav-item dropdown" style="margin-right: 6.5rem;">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" 
+                            role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.nom }}</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path('user.edit', {choosenUser : app.user.id}) }}">Modifier mon profil</a>
+                                <a class="dropdown-item" href="{{ path('user.editPassword', {choosenUser : app.user.id}) }}">Modifier mon mot de passe</a>
+                                
+                                {# {% if 'ROLE_ADMIN' in app.user.roles %}  {# Si l'utilisateur connecté à un rôle Admin #}
+
+                                   {# <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ path('admin') }}">Panneau d'administration</a>
+
+                                {% endif %} #}
+                                
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('security.logout') }}">Déconnexion</a>
+                            </div>
+                        </li>
+
+                    {% else %} {# Si l'utilisateur n'est pas connecté #}
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('security.login') }}">Connexion</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('security.registration') }}">Inscription</a>
+                        </li>
+
+                    {% endif %}
 
                 </ul>
             </div>

@@ -5,11 +5,14 @@ namespace App\Entity;
 use App\Repository\ProduitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;  // Nécessaire pour l'import des images
+use Vich\UploaderBundle\Mapping\Annotation as Vich;  // Nécessaire pour l'import des images
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
+#[Vich\Uploadable]  // Nécessaire pour l'import des images
 class Produit
 {
     #[ORM\Id]
@@ -26,11 +29,11 @@ class Produit
     #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
     private ?string $description = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imageName = null;
+    #[Vich\UploadableField(mapping: 'produit_images', fileNameProperty: 'imageName')]  // A paramétrer en fonction du ficher config/packages/vich_uploader.yaml
+    private ?File $imageFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imageFile = null;
+    private ?string $imageName = null;
 
     #[ORM\Column]
     #[Assert\NotNull()]  // Car ne doit pas être nul
@@ -65,12 +68,6 @@ class Produit
         $this->updatedAt = new \DateTimeImmutable();
     }
 
-    #[ORM\PrePersist()]
-    public function setUpdatedAtValue()
-    {
-        $this->updatedAt = new \DateTimeImmutable();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -100,29 +97,41 @@ class Produit
         return $this;
     }
 
+   /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
     public function getImageName(): ?string
     {
         return $this->imageName;
     }
 
-    public function setImageName(?string $imageName): self
-    {
-        $this->imageName = $imageName;
-
-        return $this;
-    }
-
-    public function getImageFile(): ?string
-    {
-        return $this->imageFile;
-    }
-
-    public function setImageFile(?string $imageFile): self
-    {
-        $this->imageFile = $imageFile;
-
-        return $this;
-    }
 
     public function getPrix(): ?float
     {
@@ -182,5 +191,11 @@ class Produit
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    #[ORM\PrePersist()]
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTimeImmutable();
     }
 }

@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use Faker\Factory;
 use App\Entity\User;
 use Faker\Generator;
+use App\Entity\Contact;
 use App\Entity\Produit;
 use App\Entity\Categorie;
 use App\Entity\SousCategorie;
@@ -27,7 +28,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // !!!!! USERS !!!!
+        // !!!!!  USERS  !!!!
 
         $users = [];
 
@@ -55,7 +56,7 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
-        //  !!!!! CATEGORIES  !!!!!
+        //  !!!!!  CATEGORIES  !!!!!
 
         $categories = [];
 
@@ -78,7 +79,7 @@ class AppFixtures extends Fixture
         }
 
 
-        //  !!!!! SOUS-CATEGORIES  !!!!!
+        //  !!!!!  SOUS-CATEGORIES  !!!!!
 
         $sousCategories = [];
 
@@ -101,7 +102,7 @@ class AppFixtures extends Fixture
         }
 
 
-        //  !!!!! PRODUITS  !!!!!
+        //  !!!!!  PRODUITS  !!!!!
 
         $produits = [];
 
@@ -119,6 +120,24 @@ class AppFixtures extends Fixture
             $produits[] = $produit;
 
             $manager->persist($produit);
+        }
+
+
+        //  !!!!!  CONTACTS  !!!!!
+
+        $contacts = [];
+
+        for ($i=1; $i <= 10; $i++)  // On génère 10 demandes de contact
+        { 
+            $contact = new Contact();
+            $contact->setNom($this->faker->name)
+                ->setEmail($this->faker->email())
+                ->setSujet('Demande n°' . ($i))
+                ->setMessage($this->faker->text());
+       
+            $contacts[] = $contact;
+
+            $manager->persist($contact);
         }
 
         $manager->flush();

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BeerParadise - Contact{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1 class="mt-4">Formulaire de contact</h1>
+
+        {# !!!!! MESSAGE FLASH !!!!! #}
+        {% for message in app.flashes('success') %}          {# success = Nom de l'alerte  #}
+            <div class="alert alert-success mt-4">           {# alert-sucess = Type d'alerte Bootstrap #}
+                {{ message }}
+            </div>
+        {% endfor %}
+    
+        {{ form(form) }}
+    
+    </div>
+
+{% endblock %}

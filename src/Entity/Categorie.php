@@ -30,8 +30,10 @@ class Categorie
     #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
     private ?string $description = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\Length(min: 2, max: 100)]
+    #[Vich\UploadableField(mapping: 'categorie_images', fileNameProperty: 'imageName')]  // A paramétrer en fonction du ficher config/packages/vich_uploader.yaml
+    private ?File $imageFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageName = null;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: SousCategorie::class)]
