@@ -23,8 +23,8 @@ class ContactCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)  // Permet d'ajouter la page detail (dans les options utilisateur "...")
-            ->remove(Crud::PAGE_INDEX, Action::EDIT);  // Permet d'enlever la page edit (dans les options utilisateur "...")
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)  // Permet d'ajouter la page detail (dans les options de contact "...")
+            ->remove(Crud::PAGE_INDEX, Action::EDIT);  // Permet d'enlever la page edit (dans les options contact "...")
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -32,6 +32,10 @@ class ContactCrudController extends AbstractCrudController
         return $crud->setEntityLabelInPlural('Demandes de contact')
             ->setEntityLabelInSingular('Demande de contact')
             ->setPageTitle('index', 'BeerParadise - Administration des demandes de contact')
+            ->setPageTitle('detail', function (Contact $contact) 
+            {
+                return 'Demande de contact de : ' . $contact->getNom();
+            })
             ->setPaginatorPageSize(25)  // Nombre d'utilisateurs par page
             ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig'); // Pour CKEditor (permet d'avoir un editeur plus complet pour les messages)
                                                                            // (dans la page edit (qui est désactivée, à réactiver dans les actions ci-dessus))

@@ -9,10 +9,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class UserCrudController extends AbstractCrudController
@@ -34,9 +36,15 @@ class UserCrudController extends AbstractCrudController
         return $crud->setEntityLabelInPlural('Utilisateurs')
             ->setEntityLabelInSingular('Utilisateur')
             ->setPageTitle('index', 'BeerParadise - Administration utilisateurs')
-            ->setPageTitle('new', 'BeerParadise - Ajout d\'un utilisateur')
-            ->setPageTitle('edit', 'BeerParadise - Modification d\'un utilisateur')
-            ->setPageTitle('detail', 'BeerParadise - Details utilisateur')
+            ->setPageTitle('new', 'Ajout d\'un utilisateur')
+            ->setPageTitle('edit', function (User $user) 
+                {
+                    return 'Modification de l\'utilisateur : ' . $user->getNom();
+                })
+            ->setPageTitle('detail', function (User $user) 
+                {
+                    return $user->getNom();
+                })
             ->setPaginatorPageSize(25); // Nombre d'utilisateurs par page
     }
 
@@ -45,10 +53,15 @@ class UserCrudController extends AbstractCrudController
     {
         if ($pageName=="new") 
             return [
-                TextField::new('nom'),
-                TextField::new('email'),
-                ArrayField::new('roles'),
-                TextField::new('plainPassword')
+                yield TextField::new('nom'),
+                yield TextField::new('email'),
+                $roles = ['ROLE_ADMIN', 'ROLE_USER'],
+                yield ChoiceField::new('roles')
+                    ->setChoices(array_combine($roles, $roles))
+                    ->allowMultipleChoices()
+                    ->renderExpanded()
+                    ->renderAsBadges(),
+                yield TextField::new('plainPassword')
                     ->setFormType(RepeatedType::class)
                     ->setFormTypeOptions([
                         'type' => PasswordType::class,
@@ -58,22 +71,27 @@ class UserCrudController extends AbstractCrudController
             ];
         elseif ($pageName=="edit")
             return [
-                TextField::new('nom'),
-                TextField::new('email'),
-                ArrayField::new('roles'),
+                yield TextField::new('nom'),
+                yield TextField::new('email'),
+                $roles = ['ROLE_ADMIN', 'ROLE_USER'],
+                yield ChoiceField::new('roles')
+                    ->setChoices(array_combine($roles, $roles))
+                    ->allowMultipleChoices()
+                    ->renderExpanded()
+                    ->renderAsBadges(),
             ];
         elseif ($pageName=="detail")
             return [
-                IdField::new('id'),
-                TextField::new('nom'),
-                TextField::new('email'),
-                ArrayField::new('roles'),
+                yield IdField::new('id'),
+                yield TextField::new('nom'),
+                yield TextField::new('email'),
+                yield ArrayField::new('roles'),
             ];
-            else // page : index
+        else // page : index
             return [
-                IdField::new('id'),
-                TextField::new('nom'),
-                TextField::new('email'),
+                yield IdField::new('id'),
+                yield TextField::new('nom'),
+                yield TextField::new('email'),
             ];
     }
     

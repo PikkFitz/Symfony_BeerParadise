@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 #[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
-#[UniqueEntity('name')]  // Le nom doit être UNIQUE,  nécéssite le use "UniqueEntity"
+#[UniqueEntity('nom')]  // Le nom doit être UNIQUE,  nécéssite le use "UniqueEntity"
 class Categorie
 {
     #[ORM\Id]
@@ -56,6 +56,7 @@ class Categorie
         $this->sousCategories = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->sousCategories = new ArrayCollection([]);
     }
 
     #[ORM\PrePersist()]
@@ -158,4 +159,22 @@ class Categorie
 
         return $this;
     }
+
+    // Supprime une SousCategorie 
+    public function removeSousCategorie(SousCategorie $sousCategorie): self
+    {
+        if ($this->sousCategories->contains($sousCategorie)) 
+        {
+            $this->sousCategories->removeElement($sousCategorie);
+
+            // définit la Categorie sur null (sauf si déjà modifié)
+            if ($sousCategorie->getCategorie() === $this) 
+            {
+                $sousCategorie->setCategorie(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

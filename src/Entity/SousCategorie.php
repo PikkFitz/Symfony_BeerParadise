@@ -2,19 +2,18 @@
 
 namespace App\Entity;
 
-
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\SousCategorieRepository;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\SousCategorieRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: SousCategorieRepository::class)]
 #[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
-#[UniqueEntity('name')]  // Le nom doit être UNIQUE,  nécéssite le use "UniqueEntity"
+#[UniqueEntity('nom')]  // Le nom doit être UNIQUE,  nécéssite le use "UniqueEntity"
 class SousCategorie
 {
     #[ORM\Id]
@@ -37,7 +36,7 @@ class SousCategorie
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageName = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sousCategories')]
+    #[ORM\ManyToOne(inversedBy: 'sousCategories', targetEntity: Categorie::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $categorie = null;
 
@@ -175,4 +174,10 @@ class SousCategorie
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getNom();
+    }
+
 }
