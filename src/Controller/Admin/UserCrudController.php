@@ -35,7 +35,7 @@ class UserCrudController extends AbstractCrudController
     {
         return $crud->setEntityLabelInPlural('Utilisateurs')
             ->setEntityLabelInSingular('Utilisateur')
-            ->setPageTitle('index', 'BeerParadise - Administration utilisateurs')
+            ->setPageTitle('index', 'BeerParadise - Administration des utilisateurs')
             ->setPageTitle('new', 'Ajout d\'un utilisateur')
             ->setPageTitle('edit', function (User $user) 
                 {
@@ -45,6 +45,7 @@ class UserCrudController extends AbstractCrudController
                 {
                     return $user->getNom();
                 })
+            ->setDefaultSort(['id' => 'ASC'])
             ->setPaginatorPageSize(25); // Nombre d'utilisateurs par page
     }
 

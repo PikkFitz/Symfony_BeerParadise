@@ -8,13 +8,19 @@ vich_uploader:
             uri_prefix: /images/produit
             upload_destination: '%kernel.project_dir%/public/images/produit'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: false
+            delete_on_remove: false
 
-        sous-categorie_images:
+        sousCategorie_images:
             uri_prefix: /images/sous-categorie
-            upload_destination: '%kernel.project_dir%/public/images/sous-categorie'
+            upload_destination: '%kernel.project_dir%/public/images/sousCategorie'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: false
+            delete_on_remove: false
             
         categorie_images:
             uri_prefix: /images/categorie
             upload_destination: '%kernel.project_dir%/public/images/categorie'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: false
+            delete_on_remove: false

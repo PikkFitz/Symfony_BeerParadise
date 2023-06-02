@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Entity\Contact;
+use App\Entity\Produit;
 use App\Entity\Categorie;
 use App\Entity\SousCategorie;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,9 +33,10 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-user', User::class);
         yield MenuItem::linkToCrud('Catégories', 'fa-solid fa-sitemap', Categorie::class);
         yield MenuItem::linkToCrud('Sous-catégories', 'fa-solid fa-folder-tree', SousCategorie::class);
+        yield MenuItem::linkToCrud('Produits', 'fa-solid fa-beer-mug-empty', Produit::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-user', User::class);
         yield MenuItem::linkToCrud('Demandes de contact', 'fa-solid fa-envelope', Contact::class);
     }
 }

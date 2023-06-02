@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Categorie;
+use App\Entity\Produit;
 use App\Entity\SousCategorie;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -14,10 +14,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class SousCategorieCrudController extends AbstractCrudController
+class ProduitCrudController extends AbstractCrudController
 {
     private $manager;
 
@@ -28,47 +31,52 @@ class SousCategorieCrudController extends AbstractCrudController
 
     public static function getEntityFqcn(): string
     {
-        return SousCategorie::class;
+        return Produit::class;
     }
 
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL);  // Permet d'ajouter la page detail (dans les options sous-catégorie "...")
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);  // Permet d'ajouter la page detail (dans les options produit "...")
     }
 
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->setEntityLabelInPlural('Sous-catégories')
-            ->setEntityLabelInSingular('Sous-catégorie')
-            ->setPageTitle('index', 'BeerParadise - Administration des sous-catégories')
-            ->setPageTitle('new', 'BeerParadise - Ajout d\'une sous-catégorie')
-            ->setPageTitle('edit', function (SousCategorie $sousCategorie) 
+        return $crud->setEntityLabelInPlural('Produits')
+            ->setEntityLabelInSingular('Produit')
+            ->setPageTitle('index', 'BeerParadise - Administration des produits')
+            ->setPageTitle('new', 'BeerParadise - Ajout d\'un produit')
+            ->setPageTitle('edit', function (Produit $produit) 
                 {
-                    return 'Modification de la sous-catégorie : ' . $sousCategorie->getNom();
+                    return 'Modification du produit : ' . $produit->getNom();
                 })
-            ->setPageTitle('detail', function (SousCategorie $sousCategorie) 
+            ->setPageTitle('detail', function (Produit $produit) 
                 {
-                    return $sousCategorie->getNom();
+                    return $produit->getNom();
                 })
             ->setDefaultSort(['id' => 'ASC'])
-            ->setPaginatorPageSize(25); // Nombre de SousCategories par page
+            ->setPaginatorPageSize(25); // Nombre de Produits par page
     }
+
 
     public function configureFields(string $pageName): iterable
     {
-        // On recupère toutes les Categories existantes (pour les choix de la Categorie quand on modifie/ajoute une SousCategorie)
-        $categories = $this->manager->getRepository(Categorie::class)->findAll();
+        // On recupère toutes les SousCategories existantes (pour les choix de la SousCategorie quand on modifie/ajoute un Produit)
+        $sousCategories = $this->manager->getRepository(SousCategorie::class)->findAll();
 
         if ($pageName=="new") 
         {
             return [
                 TextField::new('nom'),
                 TextareaField::new('description'),
-                ChoiceField::new('categorie')
-                    ->setChoices(array_combine($categories, $categories))
-                    ->renderExpanded()
-                    ->renderAsBadges(),
+                AssociationField::new('sousCategorie')
+                    ->setFormTypeOptions([
+                        'multiple' => false,
+                        'class' => SousCategorie::class,
+                        'choices' => $sousCategories,
+                    ]),
+                NumberField::new('prix'),
+                IntegerField::new('stock'),
                 TextField::new('imageFile')->setFormType(VichImageType::class),
             ];
         } 
@@ -77,10 +85,14 @@ class SousCategorieCrudController extends AbstractCrudController
             return [
                 TextField::new('nom'),
                 TextareaField::new('description'),
-                ChoiceField::new('categorie')
-                    ->setChoices(array_combine($categories, $categories))
-                    ->renderExpanded()
-                    ->renderAsBadges(),
+                AssociationField::new('sousCategorie')
+                    ->setFormTypeOptions([
+                        'multiple' => false,
+                        'class' => SousCategorie::class,
+                        'choices' => $sousCategories,
+                    ]),
+                NumberField::new('prix'),
+                IntegerField::new('stock'),
                 TextField::new('imageFile')->setFormType(VichImageType::class),
             ];
         } 
@@ -89,10 +101,11 @@ class SousCategorieCrudController extends AbstractCrudController
             return [
                 IdField::new('id'),
                 TextField::new('nom'),
-                TextField::new('categorie'),
+                TextField::new('sousCategorie'),
                 TextareaField::new('description'),
-                ArrayField::new('Produits'),
-                ImageField::new('imageName', 'Image')->setBasePath('/images/sousCategorie')
+                NumberField::new('prix'),
+                IntegerField::new('stock'),
+                ImageField::new('imageName', 'Image')->setBasePath('/images/produit')
             ];
         } 
         else // page : index
@@ -100,8 +113,10 @@ class SousCategorieCrudController extends AbstractCrudController
             return [
                 IdField::new('id'),
                 TextField::new('nom'),
-                TextField::new('categorie'),
-                ImageField::new('imageName', 'Image')->setBasePath('/images/sousCategorie')
+                TextField::new('sousCategorie'),
+                NumberField::new('prix'),
+                IntegerField::new('stock'),
+                ImageField::new('imageName', 'Image')->setBasePath('/images/produit')
             ];
         }
     }

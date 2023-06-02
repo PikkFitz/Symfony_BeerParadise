@@ -36,6 +36,7 @@ class ContactCrudController extends AbstractCrudController
             {
                 return 'Demande de contact de : ' . $contact->getNom();
             })
+            ->setDefaultSort(['id' => 'ASC'])
             ->setPaginatorPageSize(25)  // Nombre d'utilisateurs par page
             ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig'); // Pour CKEditor (permet d'avoir un editeur plus complet pour les messages)
                                                                            // (dans la page edit (qui est désactivée, à réactiver dans les actions ci-dessus))

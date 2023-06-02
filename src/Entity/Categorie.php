@@ -6,14 +6,18 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 #[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
 #[UniqueEntity('nom')]  // Le nom doit être UNIQUE,  nécéssite le use "UniqueEntity"
+#[Vich\Uploadable]  // Nécessaire pour l'import des images
 class Categorie
 {
     #[ORM\Id]
@@ -37,7 +41,6 @@ class Categorie
     private ?string $imageName = null;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: SousCategorie::class)]
-    #[Assert\NotNull()]  // Ne doit pas être nul
     private Collection $sousCategories;
 
     #[ORM\Column]
@@ -53,7 +56,7 @@ class Categorie
      */
     public function __construct()
     {
-        $this->sousCategories = new ArrayCollection();
+        // $this->sousCategories = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
         $this->sousCategories = new ArrayCollection([]);
@@ -94,17 +97,41 @@ class Categorie
         return $this;
     }
 
-    public function getImage(): ?string
+   /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
     {
-        return $this->image;
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
     }
 
-    public function setImage(?string $image): self
+    public function getImageFile(): ?File
     {
-        $this->image = $image;
-
-        return $this;
+        return $this->imageFile;
     }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+    
 
     /**
      * @return Collection<int, SousCategorie>
@@ -160,21 +187,9 @@ class Categorie
         return $this;
     }
 
-    // Supprime une SousCategorie 
-    public function removeSousCategorie(SousCategorie $sousCategorie): self
+    public function __toString(): string
     {
-        if ($this->sousCategories->contains($sousCategorie)) 
-        {
-            $this->sousCategories->removeElement($sousCategorie);
-
-            // définit la Categorie sur null (sauf si déjà modifié)
-            if ($sousCategorie->getCategorie() === $this) 
-            {
-                $sousCategorie->setCategorie(null);
-            }
-        }
-
-        return $this;
+        return $this->getNom();
     }
 
 }
