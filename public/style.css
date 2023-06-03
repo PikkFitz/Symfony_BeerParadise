@@ -11,7 +11,30 @@
     /*height: 10rem; */          /* Hauteur du pied-de-page */
 }
 
-.test
+.searchBar
 {
     max-height: 30px;
+    /* background-color: #575757; */
 }
+
+.linkCard {
+	text-decoration: none;
+    color: #e0e0e0;
+}
+.linkCard:hover {
+    font-weight: bold;
+	text-decoration: underline;
+    color: #feffbd;
+}
+
+/* .carouselExampleCaptions
+{
+    max-width: 50%;
+} */
+
+/* .image_carousel
+{
+    max-width: 50%;
+    height: auto;
+    margin: 0 auto;
+} */

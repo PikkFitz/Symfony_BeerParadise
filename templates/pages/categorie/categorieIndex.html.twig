@@ -12,7 +12,6 @@
             <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
         </form>
         
-    
         <div class="d-flex justify-content-around flex-wrap">
 
             {% for categorie in categories %}
@@ -20,7 +19,7 @@
                     <div class="card-header bg-primary">BeerParadise<sup>© </sup><i class="fa-solid fa-beer-mug-empty" style="color: #ff006f;"></i></div>
                     <div class="card-body">
                         <h4 class="card-title">
-                            <a href="{{ path('souscategorie.index', {categorie: categorie.id}) }}" class="text-light">
+                            <a href="{{ path('souscategorie.index', {categorie: categorie.id}) }}" class="linkCard">
                                 {{ categorie.nom }}
                             </a>
                         </h4>

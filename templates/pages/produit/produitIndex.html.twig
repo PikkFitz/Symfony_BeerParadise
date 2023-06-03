@@ -19,10 +19,11 @@
                     <div class="card-header bg-primary">BeerParadise<sup>© </sup><i class="fa-solid fa-beer-mug-empty" style="color: #ff006f;"></i></div>
                     <div class="card-body">
                         <h4 class="card-title">
-                            <a href="{{ path('produit.show', {produit: produit.id}) }}" class="text-light">
+                            <a href="{{ path('produit.show', {produit: produit.id}) }}" class="linkCard">
                                 {{ produit.nom }}
                             </a>
                         </h4>
+                        <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="d-block mx-auto img-fluid w-100"  alt="{{ produit.nom }}">
                         {# !!!!!  IMAGE  !!!!! #}
                         {# {% if recipe.imageName %}
                             <div class="recipe_image mt-2">

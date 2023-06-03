@@ -9,34 +9,41 @@
         <h1 class="mt-4">{{ produit.nom }}</h1>
         <hr class="my-2">
 
-        <div class="mt-4">
-            {% if produit.sousCategorie %}
-                <p><strong> Type : </strong>{{ produit.sousCategorie.nom }}</p>
-            {% else %}
-                <p><strong> Type : </strong>non renseigné</p>
-            {% endif %}
-        </div>
+        <form>
+            <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
+        </form>
 
-        <div class="mt-4">
-            {% if produit.prix %}
-                <p><strong> Prix : </strong>{{ produit.prix }}€</p>
-            {% else %}
-                <p><strong> Prix : </strong>non renseigné</p>
-            {% endif %}
-        </div>
+        <div class="row">
+            <div class="col-4 produit_image mt-2">
+                <img style="max-width: 100%" src="{{ vich_uploader_asset(produit, 'imageFile') }}">
+            </div>
 
-        <div class="recipe_image mt-2">
-            <img style="max-width: 25%" src="{{ vich_uploader_asset(produit, 'imageFile') }}">
-        </div>
+            <div class="col mt-2">
+                {% if produit.sousCategorie %}
+                    <p><strong> Type : </strong>{{ produit.sousCategorie.nom }}</p>
+                {% else %}
+                    <p><strong> Type : </strong>non renseigné</p>
+                {% endif %}
 
-        <div class="mt-4">
-            {% if produit.description %}
+
+                {% if produit.prix %}
+                    <p><strong> Prix : </strong>{{ produit.prix }}€</p>
+                {% else %}
+                    <p><strong> Prix : </strong>non renseigné</p>
+                {% endif %}
+
+
+                {% if produit.description %}
                 <p><strong> Description : </strong>{{ produit.description|raw }}</p>
-            {% else %}
-                <p><strong> Description : </strong>non renseignée</p>
-            {% endif %}
-        </div>
+                {% else %}
+                    <p><strong> Description : </strong>non renseignée</p>
+                {% endif %}
 
+                {# Ajouter un bouton + Quantité pour ajout au Panier #}
+            </div>
+            
+        </div>
+        
     </div>
 
 {% endblock %}
