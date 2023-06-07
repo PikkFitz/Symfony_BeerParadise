@@ -8,9 +8,18 @@
         <h1>Nos bières {{ sousCategorie.nom }}</h1>
         <hr class="my-2">
 
-        <form>
+        {# !!!!! MESSAGE FLASH !!!!! #}
+        {% for message in app.flashes('success') %}          {# danger = Nom de l'alerte  #}
+            <div class="alert alert-success mt-4">           {# alert-danger = Type d'alerte Bootstrap #}
+                <h5>{{ message }}</h5>
+            </div>
+        {% endfor %}
+
+        {# !!!!! BOUTON RETOUR !!!!! #}
+        {# <form>
             <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
-        </form>
+        </form> #}
+        <a href="{{path("categorie.index")}}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
     
         <div class="d-flex justify-content-around flex-wrap">
 
@@ -26,7 +35,7 @@
                         <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="d-block mx-auto img-fluid w-100"  alt="{{ produit.nom }}">
                         {# !!!!!  IMAGE  !!!!! #}
                         {# {% if recipe.imageName %}
-                            <div class="recipe_image mt-2">
+                            <div class="recclass="ms-1"ipe_image mt-2">
                                 <img style="max-width: 100%" src="{{ vich_uploader_asset(recipe, 'imageFile') }}">
                             </div>
                         {% else %}
@@ -35,10 +44,20 @@
                         <p class="card-text mt-2">{{ sousCategorie.description|slice(0, 200) ~ '...' }}</p>
                         {# Le filtre slice sert à couper la description si celle-ci est trop longue #}
                         {# Ici, la description est coupée après le 100ème charactère et il y a "..." à la fin #}
+
+                        <form action="{{ path('add') }}" method="POST">
+                            <div class="d-flex justify-content-center col mt-2">
+                                <input type="hidden" value="{{ produit.id }}" name="id">
+                                <button type="submit" class="btn btn-success btn-sm me-3">Ajouter au panier &nbsp; <i class="fa-solid fa-cart-shopping"></i></button>
+
+                                <label for="quantite" class="d-flex justify-content-center align-items-center"><small>Quantité :&nbsp;</small></label>
+                                <input type="number" class="quantite form-control form-control-sm me-2" name="quantite" title="Veuillez indiquer une quantité" min="1" max="999" value="1" required>
+                            </div>
+                        </form>
                     </div>
                 </div>
             {% endfor %}
-        </div>
+        </div> 
     </div>
 
 {% endblock %}

@@ -26,9 +26,9 @@ class BoutiqueController extends AbstractController
 
 
     #[Route('categorie/{categorie}/sous-categorie/', name: 'souscategorie.index')]
-    public function souscategorie(SousCategorieRepository $repository, Categorie $categorie): Response
+    public function souscategorie(SousCategorieRepository $sousCategorieRepository, Categorie $categorie): Response
     {
-        $sousCategories = $repository->findBy(['categorie' => $categorie]);
+        $sousCategories = $sousCategorieRepository->findBy(['categorie' => $categorie]);
 
         return $this->render('pages/sousCategorie/sousCategorieIndex.html.twig', [
             'sousCategories' => $sousCategories,

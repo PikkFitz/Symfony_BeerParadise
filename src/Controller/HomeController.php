@@ -16,7 +16,6 @@ class HomeController extends AbstractController
         // On chercher les 10 derniers produits ajouter à la BDD
         $produits = $repository->findBy([], ['createdAt' => 'DESC'], 10); 
 
-
         return $this->render('pages/home.html.twig', [
             'produits' => $produits,
         ]);

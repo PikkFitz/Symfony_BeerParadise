@@ -26,7 +26,9 @@
     </head>
     <body>
         {% block header %}
-            {% include "partials/_header.html.twig" %}
+        {{ render(controller('App\\Controller\\HeaderController::header')) }}
+            {# {% render "partials/_header.html.twig" %} #}
+            {# with {'quantiteTotale': quantiteTotale } #}
         {% endblock %}
 
         {% block body %}

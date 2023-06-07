@@ -24,6 +24,17 @@
                     <input class="form-control me-sm-2" type="search" placeholder="Search">
                     <button class="btn btn-secondary my-2 my-sm-0 d-flex justify-content-center align-items-center" type="submit">Search</button>
             </form>
+
+            {# !!!!!  Bouton Panier  !!!!! #}
+            {% if quantiteTotale is defined %}
+                <a href="{{path("panier")}}" class="boutonPanier btn btn-success d-flex justify-content-center align-items-center mx-5" title="Afficher le panier">
+                Panier &nbsp; <i class="fa-solid fa-cart-shopping"></i>({{ quantiteTotale }})</a>
+            {% else %}
+                <a href="{{path("panier")}}" class="boutonPanier btn btn-success d-flex justify-content-center align-items-center mx-5" title="Afficher le panier">
+                Panier &nbsp; <i class="fa-solid fa-cart-shopping"></i></a>
+            {% endif %}
+            
+            
             
             
             <div class="d-flex mx-1">

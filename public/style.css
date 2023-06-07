@@ -17,6 +17,12 @@
     /* background-color: #575757; */
 }
 
+.boutonPanier
+{
+    max-height: 30px;
+    /* background-color: #575757; */
+}
+
 .linkCard {
 	text-decoration: none;
     color: #e0e0e0;
@@ -25,6 +31,16 @@
     font-weight: bold;
 	text-decoration: underline;
     color: #feffbd;
+}
+
+.quantite
+{
+    width: 45px;
+    height: 35px;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255,255,255,.4);
+    background-color: transparent;
+    padding: 0;
 }
 
 /* .carouselExampleCaptions

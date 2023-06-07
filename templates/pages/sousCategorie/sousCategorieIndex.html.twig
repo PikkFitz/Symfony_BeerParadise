@@ -8,9 +8,11 @@
         <h1>Nos bières {{ categorie.nom }}</h1>
         <hr class="my-2">
 
-        <form>
+        {# !!!!! BOUTON RETOUR !!!!! #}
+        {# <form>
             <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
-        </form>
+        </form> #}
+        <a href="{{path("categorie.index")}}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
     
         <div class="d-flex justify-content-around flex-wrap">
 
