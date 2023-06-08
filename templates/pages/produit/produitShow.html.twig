@@ -9,18 +9,18 @@
         <h1 class="mt-4">{{ produit.nom }}</h1>
         <hr class="my-2">
 
+        {# !!!!! BOUTON RETOUR !!!!! #}
+        {# <form>
+            <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
+        </form> #}
+        <a href="{{ path("produit.index", {'sousCategorie': sousCategorie.id}) }}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
+
         {# !!!!! MESSAGE FLASH !!!!! #}
         {% for message in app.flashes('success') %}          {# danger = Nom de l'alerte  #}
             <div class="alert alert-success mt-4">           {# alert-danger = Type d'alerte Bootstrap #}
                 <h5>{{ message }}</h5>
             </div>
         {% endfor %}
-
-        {# !!!!! BOUTON RETOUR !!!!! #}
-        {# <form>
-            <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
-        </form> #}
-        <a href="{{path("produit.index")}}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
 
         <div class="row">
             <div class="col-4 produit_image mt-2">

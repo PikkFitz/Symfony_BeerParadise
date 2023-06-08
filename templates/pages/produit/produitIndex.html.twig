@@ -8,18 +8,18 @@
         <h1>Nos bières {{ sousCategorie.nom }}</h1>
         <hr class="my-2">
 
+        {# !!!!! BOUTON RETOUR !!!!! #}
+        {# <form>
+            <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
+        </form> #}
+        <a href="{{ path("souscategorie.index", {'categorie': categorie.id}) }}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
+
         {# !!!!! MESSAGE FLASH !!!!! #}
         {% for message in app.flashes('success') %}          {# danger = Nom de l'alerte  #}
             <div class="alert alert-success mt-4">           {# alert-danger = Type d'alerte Bootstrap #}
                 <h5>{{ message }}</h5>
             </div>
         {% endfor %}
-
-        {# !!!!! BOUTON RETOUR !!!!! #}
-        {# <form>
-            <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
-        </form> #}
-        <a href="{{path("categorie.index")}}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
     
         <div class="d-flex justify-content-around flex-wrap">
 

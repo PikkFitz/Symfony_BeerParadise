@@ -8,14 +8,15 @@
         <h1>Panier</h1>
         <hr class="my-2">
 
-        <form>
+        {# <form>
             <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
-        </form>
+        </form> #}
 
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th class="text-center align-middle" scope="col">Produit</th>
+                    <th class="text-center align-middle" scope="col">Image</th>
                     <th class="text-center align-middle" scope="col">Prix</th>
                     <th class="text-center align-middle" scope="col">Quantité</th>
                     <th class="text-center align-middle" scope="col">Total</th>
@@ -26,6 +27,7 @@
                 {% for item in listePanier %}
                     <tr class="table-light">
                         <th scope="row" class="text-center align-middle">{{ item.produit.nom }}</th>
+                        <td class="text-center align-middle" style="width: 20%"><img style="max-width: 20%" src="{{ vich_uploader_asset(item.produit, 'imageFile') }}">{# {{ item.produit.imageName }} #}</td>
                         <td class="text-center align-middle">{{ item.produit.prix }} €</td>
                         <td class="text-center align-middle">{{ item.quantite }}</td>
                         <td class="text-center align-middle">{{ item.produit.prix * item.quantite }} €</td>

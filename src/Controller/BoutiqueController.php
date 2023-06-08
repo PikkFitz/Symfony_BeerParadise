@@ -41,10 +41,12 @@ class BoutiqueController extends AbstractController
     public function produit(ProduitRepository $repository, SousCategorie $sousCategorie): Response
     {
         $produits = $repository->findBy(['sousCategorie' => $sousCategorie]);
+        $categorie = $sousCategorie->getCategorie();
 
         return $this->render('pages/produit/produitIndex.html.twig', [
             'produits' => $produits,
             'sousCategorie' => $sousCategorie,
+            'categorie' => $categorie,
         ]);
     }
 
@@ -52,8 +54,11 @@ class BoutiqueController extends AbstractController
     #[Route('produit/{produit}', name: 'produit.show')]
     public function produitShow(Produit $produit): Response
     {
+        $sousCategorie = $produit->getSousCategorie();
+
         return $this->render('pages/produit/produitShow.html.twig', [
             'produit' => $produit,
+            'sousCategorie' => $sousCategorie,
         ]);
     }
 }
