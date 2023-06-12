@@ -25,22 +25,33 @@
 
             {% for produit in produits %}
                 <div class="card border-light mt-3 mx-2" style="max-width: 30%;">
-                    <div class="card-header bg-primary">BeerParadise<sup>© </sup><i class="fa-solid fa-beer-mug-empty" style="color: #ff006f;"></i></div>
+                    {# <div class="card-header bg-primary">BeerParadise<sup>© </sup><i class="fa-solid fa-beer-mug-empty" style="color: #ff006f;"></i></div> #}
+                    <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                        <h5 class="card-title m-0">
+                            <a href="{{ path('produit.show', {produit: produit.id}) }}" class="cardHeader">
+                                        <i class="fa-solid fa-beer-mug-empty" style="color: #ff006f;"></i> {{ produit.nom }}
+                            </a></h5>
+                            <p class="m-0">{{ produit.prix }}€</p>
+                    </div>
                     <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="{{ path('produit.show', {produit: produit.id}) }}" class="linkCard">
-                                {{ produit.nom }}
-                            </a>
-                        </h4>
-                        <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="d-block mx-auto img-fluid w-100"  alt="{{ produit.nom }}">
+                        {# <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="card-title">
+                                <a href="{{ path('produit.show', {produit: produit.id}) }}" class="linkCard">
+                                    {{ produit.nom }}
+                                </a>
+                            </h4>
+                            <p>{{ produit.prix }}€</p>
+                        </div> #}
+                        {# <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="d-block mx-auto img-fluid w-100"  alt="{{ produit.nom }}"> #}
+                        
                         {# !!!!!  IMAGE  !!!!! #}
-                        {# {% if recipe.imageName %}
-                            <div class="recclass="ms-1"ipe_image mt-2">
-                                <img style="max-width: 100%" src="{{ vich_uploader_asset(recipe, 'imageFile') }}">
+                        {% if produit.imageName %}
+                            <div class="produitImage">
+                                <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="d-block mx-auto img-fluid w-100"  alt="{{ produit.nom }}">
                             </div>
                         {% else %}
                             <div></div>
-                        {% endif %} #}
+                        {% endif %}
                         <p class="card-text mt-2">{{ sousCategorie.description|slice(0, 200) ~ '...' }}</p>
                         {# Le filtre slice sert à couper la description si celle-ci est trop longue #}
                         {# Ici, la description est coupée après le 100ème charactère et il y a "..." à la fin #}

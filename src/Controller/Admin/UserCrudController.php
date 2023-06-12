@@ -87,6 +87,7 @@ class UserCrudController extends AbstractCrudController
                 yield TextField::new('nom'),
                 yield TextField::new('email'),
                 yield ArrayField::new('roles'),
+                yield ArrayField::new('adresses'),
             ];
         else // page : index
             return [

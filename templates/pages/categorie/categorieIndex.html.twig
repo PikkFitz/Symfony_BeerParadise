@@ -18,21 +18,27 @@
 
             {% for categorie in categories %}
                 <div class="card border-light mt-3 mx-2" style="max-width: 30%;">
-                    <div class="card-header bg-primary">BeerParadise<sup>© </sup><i class="fa-solid fa-beer-mug-empty" style="color: #ff006f;"></i></div>
+                    <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                        <h5 class="card-title m-0">
+                            <a href="{{ path('souscategorie.index', {categorie: categorie.id}) }}" class="cardHeader">
+                                        <i class="fa-solid fa-beer-mug-empty" style="color: #ff006f;"></i> {{ categorie.nom }}
+                            </a></h5>
+                    </div>
                     <div class="card-body">
-                        <h4 class="card-title">
+                        {# <h4 class="card-title">
                             <a href="{{ path('souscategorie.index', {categorie: categorie.id}) }}" class="linkCard">
                                 {{ categorie.nom }}
                             </a>
-                        </h4>
+                        </h4> #}
+
                         {# !!!!!  IMAGE  !!!!! #}
-                        {# {% if recipe.imageName %}
-                            <div class="recipe_image mt-2">
+                        {% if categorie.imageName %}
+                            <div class="categorieImage">
                                 <img style="max-width: 100%" src="{{ vich_uploader_asset(recipe, 'imageFile') }}">
                             </div>
                         {% else %}
                             <div></div>
-                        {% endif %} #}
+                        {% endif %}
                         <p class="card-text mt-2">{{ categorie.description|slice(0, 200) ~ '...' }}</p>
                         {# Le filtre slice sert à couper la description si celle-ci est trop longue #}
                         {# Ici, la description est coupée après le 100ème charactère et il y a "..." à la fin #}

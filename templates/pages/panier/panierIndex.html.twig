@@ -26,7 +26,7 @@
             <tbody>
                 {% for item in listePanier %}
                     <tr class="table-light">
-                        <th scope="row" class="text-center align-middle">{{ item.produit.nom }}</th>
+                        <th scope="row" class="text-center align-middle"><a href="{{ path('produit.show', {produit: item.produit.id}) }}" class="cardHeader">{{ item.produit.nom }}</a></th>
                         <td class="text-center align-middle" style="width: 20%"><img style="max-width: 20%" src="{{ vich_uploader_asset(item.produit, 'imageFile') }}">{# {{ item.produit.imageName }} #}</td>
                         <td class="text-center align-middle">{{ item.produit.prix }} €</td>
                         <td class="text-center align-middle">{{ item.quantite }}</td>
@@ -58,7 +58,7 @@
                 </tr>
             </tfoot>
         </table>
-        <a href="#" class="btn btn-success" title="Passer la commande">Passer la commande &nbsp; <i class="fa-solid fa-cart-shopping"></i></i></a>
+        <a href="{{ path('commande.index') }}" class="btn btn-success" title="Passer la commande">Passer la commande &nbsp; <i class="fa-solid fa-cart-shopping"></i></i></a>
     </div>
 
 {% endblock %}

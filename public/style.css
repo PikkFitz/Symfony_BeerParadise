@@ -23,13 +23,21 @@
     /* background-color: #575757; */
 }
 
+.cardHeader {
+    color: #000000 !important;
+	text-decoration: none;
+}
+.cardHeader:hover {
+	text-decoration: none;
+    color: #ff006f !important;
+}
+
 .linkCard {
 	text-decoration: none;
     color: #e0e0e0;
 }
-.linkCard:hover {
-    font-weight: bold;
-	text-decoration: underline;
+.linkCard:hover {	
+    text-decoration: underline;
     color: #feffbd;
 }
 

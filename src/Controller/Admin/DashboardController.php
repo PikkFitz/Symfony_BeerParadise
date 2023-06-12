@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Entity\Adresse;
 use App\Entity\Contact;
 use App\Entity\Produit;
 use App\Entity\Categorie;
@@ -37,6 +38,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Sous-catégories', 'fa-solid fa-folder-tree', SousCategorie::class);
         yield MenuItem::linkToCrud('Produits', 'fa-solid fa-beer-mug-empty', Produit::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-user', User::class);
+        yield MenuItem::linkToCrud('Adresses', 'fa-solid fa-location-dot', Adresse::class);
         yield MenuItem::linkToCrud('Demandes de contact', 'fa-solid fa-envelope', Contact::class);
     }
 }
