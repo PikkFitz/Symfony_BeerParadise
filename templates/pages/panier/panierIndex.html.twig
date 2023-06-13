@@ -27,7 +27,9 @@
                 {% for item in listePanier %}
                     <tr class="table-light">
                         <th scope="row" class="text-center align-middle"><a href="{{ path('produit.show', {produit: item.produit.id}) }}" class="cardHeader">{{ item.produit.nom }}</a></th>
-                        <td class="text-center align-middle" style="width: 20%"><img style="max-width: 20%" src="{{ vich_uploader_asset(item.produit, 'imageFile') }}">{# {{ item.produit.imageName }} #}</td>
+                        <td class="text-center align-middle" style="width: 20%"><a href="{{ path("produit.show", { produit: item.produit.id }) }}">
+                            <img style="max-width: 20%" src="{{ vich_uploader_asset(item.produit, 'imageFile') }}" alt="{{ item.produit.nom }}">
+                        </a></td>
                         <td class="text-center align-middle">{{ item.produit.prix }} €</td>
                         <td class="text-center align-middle">{{ item.quantite }}</td>
                         <td class="text-center align-middle">{{ item.produit.prix * item.quantite }} €</td>
@@ -42,23 +44,22 @@
                                 <a href="{{path("delete", {id: item.produit.id})}}" class="btn btn-danger" title="Supprimer la ligne"><i class="fa-solid fa-trash-can"></i></a>
                             </div>
                         </td>
-
                     </tr>
                 {% else %} {# Si il n'y a rien à passer dans le "for", si le panier est vide #}
                     <tr>
-                        <td colspan="5" class="text-center">Votre panier est vide...</td>
+                        <td colspan="6" class="text-center">Votre panier est vide...</td>
                     </tr> 
                 {% endfor %}
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3">Total du panier : {{ total }} €</td>
-                    {# <td></td> #}
-                    <td></td> {# Le dernier "td" sert à avoir une ligne en dessous de total #}
+                    <td colspan="6">Total du panier : {{ total }} €</td>
                 </tr>
             </tfoot>
         </table>
-        <a href="{{ path('commande.index') }}" class="btn btn-success" title="Passer la commande">Passer la commande &nbsp; <i class="fa-solid fa-cart-shopping"></i></i></a>
+        {% if listePanier != [] %}
+            <a href="{{ path('commande.index') }}" class="btn btn-success" title="Passer la commande">Passer la commande &nbsp; <i class="fa-solid fa-cart-shopping"></i></i></a>
+        {% endif %}
     </div>
 
 {% endblock %}

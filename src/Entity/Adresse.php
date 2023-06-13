@@ -125,4 +125,9 @@ class Adresse
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getNom() . " : " . $this->getAdresse() . " " .$this->getcodePostal() . " " . $this->getVille();
+    }
 }
