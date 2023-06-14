@@ -16,28 +16,18 @@
                 </form> #}
                 <a href="{{ path("panier") }}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
 
-                {# {{ form_start(form) }} #}
+                {{ form_start(form) }}
 
-                {{ form(form, { 
-                    'attr': 
-                    {
-                        "class": "mt-3"
-                    }
-                }) }}
+                {{ form_row(form.adresses) }}
 
                 <a href="#" class="btn btn-primary btn-sm mt-3" title="Ajouter une adresse">Ajouter une nouvelle adresse</a>
 
-                {# {{ form_end(form) }} #}
             </div>
 
             <div class="col-lg-5 offset-lg-1">
                 <h2>Récapitulatif de commande</h2>
-                {# <hr class="my-2"> #}
-
-                {# {% set total = null %} #}
 
                 {% for item in listePanier %}
-                    {% set total = total + (item.produit.prix * item.quantite) %}
                     <div class="d-sm-flex align-items-center border-top py-2">
                         <a href="{{ path("produit.show", { produit: item.produit.id }) }}" style="width: 36%">
                             <img style="max-width: 100%" src="{{ vich_uploader_asset(item.produit, 'imageFile') }}" alt="{{ item.produit.nom }}">
@@ -62,11 +52,12 @@
                 <div class="d-flex aling-items-center justify-content-between border-top fs-xl pt-4 mb-4">
                     <span class="fw-semibold">Total : </span><span class="fs-4 fw-semibold ms-2">{{ (total|number_format(2, ',', '.')) }}€</span>
                 </div>
-                <div class="mt-4 text-center">
-                    {# MODIFIER LE BOUTON --> <a> #}
-                    <button class="btn btn-lg btn-primary" type="submit">Valider la commande</button>
+
+                <div class="text-center"> 
+                    {{ form_row(form.submit) }}
                 </div>
 
+                {{ form_end(form) }}
 
             </div>
         </div>

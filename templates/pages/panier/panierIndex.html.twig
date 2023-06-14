@@ -38,7 +38,7 @@
                                 <form action="{{ path('add')}}" method="POST"> {# Pour le bouton d'ajout +1 dans le panier #}
                                     <input type="hidden" value="{{item.produit.id}}" name="id">
                                     <input type="hidden" value="1" name="quantite">
-                                    <button type="submit" class="btn btn-success" title="Ajouter un article"><i class="fa-solid fa-cart-plus"></i></button>
+                                    <button type="submit" class="btn btn-success" title="Ajouter un article"><i class="fa-solid fa-plus"></i></button>
                                 </form>
                                 <a href="{{path("remove", {id: item.produit.id})}}" class="btn btn-warning" title="Supprimer un article"><i class="fa-solid fa-minus"></i></a>
                                 <a href="{{path("delete", {id: item.produit.id})}}" class="btn btn-danger" title="Supprimer la ligne"><i class="fa-solid fa-trash-can"></i></a>

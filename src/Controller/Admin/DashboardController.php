@@ -6,8 +6,10 @@ use App\Entity\User;
 use App\Entity\Adresse;
 use App\Entity\Contact;
 use App\Entity\Produit;
+use App\Entity\Commande;
 use App\Entity\Categorie;
 use App\Entity\SousCategorie;
+use App\Entity\DetailCommande;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -39,6 +41,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Produits', 'fa-solid fa-beer-mug-empty', Produit::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-user', User::class);
         yield MenuItem::linkToCrud('Adresses', 'fa-solid fa-location-dot', Adresse::class);
+        yield MenuItem::linkToCrud('Adresses', 'fa-solid fa-location-dot', Commande::class);
+        yield MenuItem::linkToCrud('Adresses', 'fa-solid fa-location-dot', DetailCommande::class);
         yield MenuItem::linkToCrud('Demandes de contact', 'fa-solid fa-envelope', Contact::class);
     }
 }

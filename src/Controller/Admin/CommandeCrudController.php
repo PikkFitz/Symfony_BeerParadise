@@ -2,27 +2,17 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\User;
+use App\Entity\Commande;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class UserCrudController extends AbstractCrudController
+class CommandeCrudController extends AbstractCrudController
 {
-
     public static function getEntityFqcn(): string
     {
-        return User::class;
+        return Commande::class;
     }
 
     public function configureActions(Actions $actions): Actions
@@ -33,23 +23,22 @@ class UserCrudController extends AbstractCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->setEntityLabelInPlural('Utilisateurs')
-            ->setEntityLabelInSingular('Utilisateur')
-            ->setPageTitle('index', 'BeerParadise - Administration des utilisateurs')
-            ->setPageTitle('new', 'Ajout d\'un utilisateur')
-            ->setPageTitle('edit', function (User $user) 
+        return $crud->setEntityLabelInPlural('Commandes')
+            ->setEntityLabelInSingular('Commande')
+            ->setPageTitle('index', 'BeerParadise - Administration des commandes')
+            ->setPageTitle('new', 'Ajout d\'une commande')
+            ->setPageTitle('edit', function (Commande $commande) 
                 {
-                    return 'Modification de l\'utilisateur : ' . $user->getNom();
+                    return 'Modification de la commandes : ' . $commande->getId();
                 })
-            ->setPageTitle('detail', function (User $user) 
+            ->setPageTitle('detail', function (Commande $commande) 
                 {
-                    return $user->getNom();
+                    return $commande->getId();
                 })
             ->setDefaultSort(['id' => 'ASC'])
-            ->setPaginatorPageSize(25); // Nombre d'utilisateurs par page
+            ->setPaginatorPageSize(25); // Nombre de commandes par page
     }
 
-    
     public function configureFields(string $pageName): iterable
     {
         if ($pageName=="new") 
@@ -97,5 +86,4 @@ class UserCrudController extends AbstractCrudController
                 yield TextField::new('email'),
             ];
     }
-    
 }

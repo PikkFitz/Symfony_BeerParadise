@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;  // Nécessaire pour l'import des images
@@ -58,6 +60,7 @@ class Produit
     #[ORM\Column]
     #[Assert\NotNull()]  // Ne doit pas être nul
     private ?\DateTimeImmutable $updatedAt = null;
+
 
     /**
      * Constructor
@@ -203,4 +206,5 @@ class Produit
     {
         return $this->getNom();
     }
+
 }

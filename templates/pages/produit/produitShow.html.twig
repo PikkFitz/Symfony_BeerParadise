@@ -51,7 +51,7 @@
                 <form action="{{ path('add') }}" method="POST">
                     <div class="col mt-4">
                         <input type="hidden" value="{{ produit.id }}" name="id">
-                        <button type="submit" class="btn btn-success">Ajouter au panier &nbsp; <i class="fa-solid fa-cart-shopping"></i></button>
+                        <button type="submit" class="btn btn-success">Ajouter au panier &nbsp; <i class="fa-solid fa-cart-plus"></i></button>
 
                         <label for="quantite" class="ms-1" #>Quantité :</label>
                         <input type="number" class="quantite" name="quantite" title="Veuillez indiquer une quantité" min="1" max="999" value="1" required>

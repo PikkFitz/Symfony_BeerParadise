@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <h1>Confirmation de la commande n°{{ commande.id }}</h1>
+        <hr><br>
+
+        <h3>Destinataire : </h3><p>{{ user.nom }}</p>
+        <br>
+
+        <h3>Adresse de livraison : </h3><p>{{ adresse.adresse }} {{ adresse.codePostal }} {{ adresse.ville }}</p>
+        <br>
+
+        <h2>Récapitulatif de commande :</h2>
+        <hr>
+        {% for item in listePanier %}
+            <h4>{{ item.produit.nom }}</h4>
+            <p>{{ item.produit.description }}</p>
+            <p>Quantité : x {{ item.quantite }} <br> Prix du produit : {{ (item.produit.prix)|number_format(2, ',', '.') }}€</p>
+            <hr>
+        {% endfor %}
+                
+        <h3>Total : {{ (total|number_format(2, ',', '.')) }}€</h3>
+   
+    </body>
+</html>
