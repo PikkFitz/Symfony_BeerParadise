@@ -19,12 +19,28 @@ class Commande
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commandes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Adresse $adresse = null;
-
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: DetailCommande::class, cascade: ["remove"])]
     private Collection $detailCommandes;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 2, max: 255)]
+    #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
+    private ?string $adresse = null;
+
+    #[ORM\Column(length: 60)]
+    #[Assert\Length(min: 2, max: 60)]
+    #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
+    private ?string $ville = null;
+
+    #[ORM\Column(length: 10)]
+    #[Assert\Length(min: 3, max: 10)]
+    #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
+    private ?string $codePostal = null;
+
+    #[ORM\Column(length: 60)]
+    #[Assert\Length(min: 2, max: 60)]
+    #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
+    private ?string $pays = null;
 
     public function __construct()
     {
@@ -44,18 +60,6 @@ class Commande
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getAdresse(): ?Adresse
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(?Adresse $adresse): self
-    {
-        $this->adresse = $adresse;
 
         return $this;
     }
@@ -93,5 +97,53 @@ class Commande
     public function __toString(): string
     {
         return $this->getId();
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(string $codePostal): self
+    {
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(string $pays): self
+    {
+        $this->pays = $pays;
+
+        return $this;
     }
 }

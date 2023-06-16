@@ -41,8 +41,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Produits', 'fa-solid fa-beer-mug-empty', Produit::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-user', User::class);
         yield MenuItem::linkToCrud('Adresses', 'fa-solid fa-location-dot', Adresse::class);
-        yield MenuItem::linkToCrud('Adresses', 'fa-solid fa-location-dot', Commande::class);
-        yield MenuItem::linkToCrud('Adresses', 'fa-solid fa-location-dot', DetailCommande::class);
+        yield MenuItem::linkToCrud('Commandes', 'fa-solid fa-box', Commande::class);
+        yield MenuItem::linkToCrud('Détails de commandes', 'fa-solid fa-boxes-packing', DetailCommande::class);
         yield MenuItem::linkToCrud('Demandes de contact', 'fa-solid fa-envelope', Contact::class);
     }
 }

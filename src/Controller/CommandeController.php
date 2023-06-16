@@ -61,7 +61,7 @@ class CommandeController extends AbstractController
         }
 
         // !!!!!!!!!! !!!!!!!!!! !!!!!!!!!! !!!!!!!!!! !!!!!!!!!!
-
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) 
         {
@@ -70,7 +70,11 @@ class CommandeController extends AbstractController
             $commande = new Commande;
             $commande->setUser($user);
             $adresse = $form->getData()['adresses'];
-            $commande->setAdresse($adresse);
+            // dd($adresse->getAdresse());
+            $commande->setAdresse($adresse->getAdresse());
+            $commande->setCodePostal($adresse->getCodePostal());
+            $commande->setVille($adresse->getVille());
+            $commande->setPays($adresse->getPays());
             
             foreach ($panier as $id => $quantite) 
             {
@@ -79,7 +83,7 @@ class CommandeController extends AbstractController
                 $detailCommande = new DetailCommande;
                 $detailCommande->setProduit($produit);
                 $detailCommande->setQuantite($quantite);
-                $detailCommande->setPrixTotal($produit->getPrix() * $quantite);
+                // $detailCommande->setPrixTotal($produit->getPrix() * $quantite);
                 $detailCommande->setCommande($commande);
 
                 $commande->addDetailCommande($detailCommande);

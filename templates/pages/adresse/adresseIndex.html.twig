@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BeerParadise - Mes adresses{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Mes Adresses</h1>
+        <hr class="my-2">
+
+        <a href="{{path("home.index")}}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
+
+        {# !!!!! MESSAGE FLASH !!!!! #}
+        {% for message in app.flashes('success') %}          {# success = Nom de l'alerte  #}
+            <div class="alert alert-success mt-4">           {# alert-sucess = Type d'alerte Bootstrap #}
+                <h5>{{ message.info }}</h5>
+                {{message.bonus}}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('danger') %}          {# danger = Nom de l'alerte  #}
+            <div class="alert alert-danger mt-4">           {# alert-danger = Type d'alerte Bootstrap #}
+                <h5>{{ message.info }}</h5>
+                {{message.bonus}}
+            </div>
+        {% endfor %}
+
+        {% if not adresses is same as ([]) %} {# Permet d'afficher qu'il n'y a pas d'adresses dans le tableau si la base est vide #}
+
+        <table class="table table-hover mt-4">
+            <thead>
+                <tr>
+                    <th class="text-center align-middle" scope="col">Nom</th>
+                    <th class="text-center align-middle" scope="col">Adresse</th>
+                    <th class="text-center align-middle" scope="col">Ville</th>
+                    <th class="text-center align-middle" scope="col">Code postal</th>
+                    <th class="text-center align-middle" scope="col">Pays</th>
+                    <th class="text-center align-middle" scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for adresse in adresses %}
+                    <tr class="table-secondary">
+                        <th class="text-center align-middle" scope="row">{{ adresse.nom }}</th>
+                        <td class="text-center align-middle">{{ adresse.adresse }}</td>
+                        <td class="text-center align-middle">{{ adresse.ville }}</td>
+                        <td class="text-center align-middle">{{ adresse.codePostal }}</td>  
+                        <td class="text-center align-middle">{{ adresse.pays }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <a href="{{ path('adresse.edit', { id: adresse.id }) }}" class="btn btn-info">Modifier</a>
+                                <a href="{{ path('adresse.delete', { id: adresse.id }) }}" class="btn btn-danger supp">Supprimer</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+
+
+        {# Script JS de confirmation pour la suppression d'un ingredient (version "classique")
+        <script> 
+        
+            const confirmation_supprimer = document.querySelectorAll(".supp");
+            
+            confirmation_supprimer.forEach(element => {
+                element.addEventListener("click", confirmDelete)
+            });
+
+            function confirmDelete(e)
+            {
+                if(!confirm('Voulez-vous supprimer cet ingrédient ?')) 
+                {
+                    e.preventDefault();
+                }
+            }
+        </script> #}
+
+        {% else %}
+            <p class="mt-4">Il n'y a pas d'adresses enregistrées...</p>
+        {% endif %}
+
+        {# Bouton "Ajouter une adresse" #}
+        <a href="{{ path('adresse.new') }}" class="btn btn-primary mb-4">Ajouter une adresse</a>
+
+    </div>
+    
+{% endblock %}

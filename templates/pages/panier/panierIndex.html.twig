@@ -10,7 +10,20 @@
 
         {# <form>
             <input type="button" class="btn btn-primary btn-sm" value="Retour" onclick="history.go(-1)">
-        </form> #}
+        </form>  #}
+
+        {# !!!!! MESSAGE FLASH !!!!! #}
+        {% for message in app.flashes('success') %}          {# success = Nom de l'alerte  #}
+            <div class="alert alert-success mt-4">           {# alert-sucess = Type d'alerte Bootstrap #}
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('danger') %}          {# success = Nom de l'alerte  #}
+            <div class="alert alert-danger mt-4">           {# alert-sucess = Type d'alerte Bootstrap #}
+                {{ message }}
+            </div>
+        {% endfor %}
 
         <table class="table table-hover">
             <thead>
@@ -25,7 +38,7 @@
             </thead>
             <tbody>
                 {% for item in listePanier %}
-                    <tr class="table-light">
+                    <tr class="table-secondary">
                         <th scope="row" class="text-center align-middle"><a href="{{ path('produit.show', {produit: item.produit.id}) }}" class="cardHeader">{{ item.produit.nom }}</a></th>
                         <td class="text-center align-middle" style="width: 20%"><a href="{{ path("produit.show", { produit: item.produit.id }) }}">
                             <img style="max-width: 20%" src="{{ vich_uploader_asset(item.produit, 'imageFile') }}" alt="{{ item.produit.nom }}">

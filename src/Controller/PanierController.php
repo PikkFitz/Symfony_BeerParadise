@@ -109,6 +109,12 @@ class PanierController extends AbstractController
         // On sauvegarde le Panier dans la session
         $session->set('panier', $panier);
 
+        // !!!!! MESSAGE FLASH !!!!!
+        $this->addFlash(
+            'danger',
+            '1x ' . $produit->getNom() . 'supprimée du panier'
+        );
+
         return $this->redirectToroute("panier");
     }
 
@@ -130,6 +136,12 @@ class PanierController extends AbstractController
 
         // On sauvegarde le Panier dans la session
         $session->set('panier', $panier);
+
+        // !!!!! MESSAGE FLASH !!!!!
+        $this->addFlash(
+            'danger',
+            'La ligne de produit "' . $produit->getNom() . '" a été supprimée du panier'
+        );
 
         return $this->redirectToroute("panier");
     }

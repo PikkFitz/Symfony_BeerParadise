@@ -29,11 +29,12 @@ class CommandeType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\NotBlank(),
                 ],
                 'choices' => 
                     $user->getAdresses(),
                 'choice_attr' => function ($choice, $key, $value) {
-                    return ['style' => 'color: black;']; // Pour afficher les noms des choix en noir (et non en blanc sur fond blanc...)
+                    return ['style' => 'color: black;']; // Pour afficher les noms des choix en noir dans le menu déroulant (et non en blanc sur fond blanc...)
                 },
                 'required' => true,
             ])

@@ -35,7 +35,7 @@ class DetailCommande
 
     public function __construct()
     {
-
+        $this->updatePrixTotal();
     }
 
     public function getId(): ?int
@@ -51,6 +51,7 @@ class DetailCommande
     public function setProduit(?Produit $produit): self
     {
         $this->produit = $produit;
+        $this->updatePrixTotal();
 
         return $this;
     }
@@ -63,6 +64,7 @@ class DetailCommande
     public function setQuantite(int $quantite): self
     {
         $this->quantite = $quantite;
+        $this->updatePrixTotal();
 
         return $this;
     }
@@ -91,8 +93,17 @@ class DetailCommande
         return $this;
     }
 
+    public function updatePrixTotal(): self
+    {
+        if ($this->quantite !== null && $this->produit !== null) {
+            $this->prixTotal = $this->quantite * $this->produit->getPrix();
+        }
+
+        return $this;
+    }
+
     public function __toString(): string
     {
-        return $this->getId();
+        return $this->getId() . " : " . $this->getProduit() . " x" . $this->getQuantite();
     }
 }

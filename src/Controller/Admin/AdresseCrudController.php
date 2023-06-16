@@ -62,7 +62,7 @@ class AdresseCrudController extends AbstractCrudController
                 yield TextField::new('nom'),
                 yield TextField::new('adresse'),
                 yield TextField::new('ville'),
-                yield IntegerField::new('codePostal'),
+                yield TextField::new('codePostal'),
                 yield TextField::new('pays'),
                 yield AssociationField::new('user')
                     ->setFormTypeOptions([
@@ -76,7 +76,7 @@ class AdresseCrudController extends AbstractCrudController
                 yield TextField::new('nom'),
                 yield TextField::new('adresse'),
                 yield TextField::new('ville'),
-                yield IntegerField::new('codePostal'),
+                yield TextField::new('codePostal'),
                 yield TextField::new('pays'),
                 yield AssociationField::new('user')
                     ->setFormTypeOptions([
@@ -90,7 +90,7 @@ class AdresseCrudController extends AbstractCrudController
                 yield IdField::new('id'),
                 yield TextField::new('adresse'),
                 yield TextField::new('ville'),
-                yield IntegerField::new('codePostal'),
+                yield TextField::new('codePostal'),
                 yield TextField::new('pays'),
                 yield IntegerField::new('user'),
             ];
@@ -99,7 +99,7 @@ class AdresseCrudController extends AbstractCrudController
                 yield IdField::new('id'),
                 yield TextField::new('adresse'),
                 yield TextField::new('ville'),
-                yield IntegerField::new('codePostal'),
+                yield TextField::new('codePostal'),
                 yield TextField::new('pays'),
                 yield IntegerField::new('user'),
             ];

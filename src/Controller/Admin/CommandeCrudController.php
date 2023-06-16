@@ -2,14 +2,29 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\User;
+use App\Entity\Adresse;
 use App\Entity\Commande;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class CommandeCrudController extends AbstractCrudController
 {
+    private $manager;
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
+    
     public static function getEntityFqcn(): string
     {
         return Commande::class;
@@ -18,7 +33,7 @@ class CommandeCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL);  // Permet d'ajouter la page detail (dans les options utilisateur "...")
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);  // Permet d'ajouter la page detail (dans les options des commandes "...")
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -29,7 +44,7 @@ class CommandeCrudController extends AbstractCrudController
             ->setPageTitle('new', 'Ajout d\'une commande')
             ->setPageTitle('edit', function (Commande $commande) 
                 {
-                    return 'Modification de la commandes : ' . $commande->getId();
+                    return 'Modification de la commande n°' . $commande->getId();
                 })
             ->setPageTitle('detail', function (Commande $commande) 
                 {
@@ -41,49 +56,54 @@ class CommandeCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        // On recupère tous les Users et Adresses existantes 
+        $users = $this->manager->getRepository(User::class)->findAll();
+        $adresses = $this->manager->getRepository(Adresse::class)->findAll();
+        
         if ($pageName=="new") 
             return [
-                yield TextField::new('nom'),
-                yield TextField::new('email'),
-                $roles = ['ROLE_ADMIN', 'ROLE_USER'],
-                yield ChoiceField::new('roles')
-                    ->setChoices(array_combine($roles, $roles))
-                    ->allowMultipleChoices()
-                    ->renderExpanded()
-                    ->renderAsBadges(),
-                yield TextField::new('plainPassword')
-                    ->setFormType(RepeatedType::class)
+                yield AssociationField::new('user')
                     ->setFormTypeOptions([
-                        'type' => PasswordType::class,
-                        'first_options' => ['label' => 'Mot de passe'],
-                        'second_options' => ['label' => 'Confirmation du mot de passe'],
-                    ]),      
+                        'multiple' => false,
+                        'class' => User::class,
+                        'choices' => $users,
+                    ]),
+                    yield TextField::new('adresse'),
+                    yield TextField::new('ville'),
+                    yield TextField::new('codePostal'),
+                    yield TextField::new('pays'),
             ];
         elseif ($pageName=="edit")
             return [
-                yield TextField::new('nom'),
-                yield TextField::new('email'),
-                $roles = ['ROLE_ADMIN', 'ROLE_USER'],
-                yield ChoiceField::new('roles')
-                    ->setChoices(array_combine($roles, $roles))
-                    ->allowMultipleChoices()
-                    ->renderExpanded()
-                    ->renderAsBadges(),
+                yield AssociationField::new('user')
+                    ->setFormTypeOptions([
+                        'multiple' => false,
+                        'class' => User::class,
+                        'choices' => $users,
+                    ]),
+                    yield TextField::new('adresse'),
+                    yield TextField::new('ville'),
+                    yield TextField::new('codePostal'),
+                    yield TextField::new('pays'),
             ];
         elseif ($pageName=="detail")
             return [
                 yield IdField::new('id'),
-                yield TextField::new('nom'),
-                yield TextField::new('email'),
-                yield ArrayField::new('roles'),
-                yield ArrayField::new('adresses'),
-                yield ArrayField::new('commandes'),
+                yield TextField::new('user'),
+                yield TextField::new('adresse'),
+                yield TextField::new('ville'),
+                yield TextField::new('codePostal'),
+                yield TextField::new('pays'),
+                yield ArrayField::new('detailCommandes'),
             ];
         else // page : index
             return [
                 yield IdField::new('id'),
-                yield TextField::new('nom'),
-                yield TextField::new('email'),
+                yield TextField::new('user'),
+                yield TextField::new('adresse'),
+                yield TextField::new('ville'),
+                yield TextField::new('codePostal'),
+                yield TextField::new('pays'),
             ];
     }
 }

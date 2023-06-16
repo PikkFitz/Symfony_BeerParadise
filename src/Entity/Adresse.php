@@ -34,6 +34,7 @@ class Adresse
 
     #[ORM\Column(length: 10)]
     #[Assert\Length(min: 3, max: 10)]
+    //#[Assert\Type(type:"integer")] // Doit être de type entier
     #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
     private ?string $codePostal = null;
 
@@ -45,9 +46,6 @@ class Adresse
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'adresses')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
-    #[ORM\OneToMany(mappedBy: 'adresse', targetEntity: Commande::class)]
-    private Collection $commandes;
 
     public function __construct()
     {
@@ -133,36 +131,7 @@ class Adresse
 
     public function __toString(): string
     {
-        return $this->getNom() . " : " . $this->getAdresse() . " " .$this->getcodePostal() . " " . $this->getVille();
+        return $this->getNom() . " : " . $this->getAdresse() . " " .$this->getcodePostal() . " " . $this->getVille() . " " . $this->getPays();
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommandes(): Collection
-    {
-        return $this->commandes;
-    }
-
-    public function addCommande(Commande $commande): self
-    {
-        if (!$this->commandes->contains($commande)) {
-            $this->commandes->add($commande);
-            $commande->setAdresse($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommande(Commande $commande): self
-    {
-        if ($this->commandes->removeElement($commande)) {
-            // set the owning side to null (unless already changed)
-            if ($commande->getAdresse() === $this) {
-                $commande->setAdresse(null);
-            }
-        }
-
-        return $this;
-    }
 }
