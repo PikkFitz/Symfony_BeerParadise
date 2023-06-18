@@ -16,6 +16,13 @@
                 </form> #}
                 <a href="{{ path("panier") }}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
 
+                {# !!!!! MESSAGE FLASH !!!!! #}
+                {% for message in app.flashes('danger') %}          {# danger = Nom de l'alerte  #}
+                    <div class="alert alert-danger mt-4">           {# alert-danger = Type d'alerte Bootstrap #}
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
                 {# {{ form_start(form) }} #}
                 {{ form_start(form) }}
 

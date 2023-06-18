@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Stripe\Charge;
+use Stripe\Stripe;
 use App\Entity\Commande;
 use App\Form\CommandeType;
 use App\Entity\DetailCommande;
@@ -70,18 +72,18 @@ class CommandeController extends AbstractController
 
             if ($form->getData()['paiement'] == 0) 
             {
-                // Paiement avec Stripe
+                // !!!!! PAIEMENT STRIPE !!!!!
                 Stripe::setApiKey('sk_test_51NJzliIvExJPa5dbZAeqcqfht6D6Z1D9RmLLAuTh81ho6hW20OjnBoENVQdIkKeu07HfGgpV0o5fPOm5ohkwaBuB00s2H3BTIF');
 
                 $charge = Charge::create([
-                    'amount' => $total * 100, // Le montant doit être en cents
-                    'currency' => 'eur', // La devise du montant
+                    'amount' => $total * 100, // Montant en centimes
+                    'currency' => 'eur', // Devise du montant
                     'description' => 'Paiement de commande',
                     // Ajoutez d'autres informations facultatives ici, comme le client, etc.
                 ]);
 
                 if ($charge->status === 'succeeded') {
-                    // Le paiement a réussi, vous pouvez enregistrer les détails de la commande et effectuer d'autres opérations nécessaires
+                    // Le paiement a réussi
 
                     // !!!!! COMMANDE !!!!!
                     $commande = new Commande;
@@ -155,8 +157,17 @@ class CommandeController extends AbstractController
                 }
                  else 
                 {
-                    // Le paiement a échoué, vous pouvez afficher un message d'erreur approprié à l'utilisateur
-                    // ...
+                    // Le paiement a échoué
+
+                    // !!!!! MESSAGE FLASH !!!!!
+                    $this->addFlash(
+                        'danger',
+                        'Erreur lors de la commande... :\'('
+                    );
+
+                    return $this->redirectToRoute('commande.index', [
+                    
+                    ]);
                 }
             }
             
