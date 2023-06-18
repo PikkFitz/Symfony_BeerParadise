@@ -41,6 +41,17 @@
     color: #feffbd;
 }
 
+.linkNamePanier
+{
+    color: #ffffff !important;
+	text-decoration: none;
+}
+.linkNamePanier:hover
+{
+    color: #ff006f !important;
+    text-decoration: none;
+}
+
 .quantite
 {
     width: 45px;

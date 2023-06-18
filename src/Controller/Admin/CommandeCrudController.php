@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -95,6 +96,8 @@ class CommandeCrudController extends AbstractCrudController
                 yield TextField::new('codePostal'),
                 yield TextField::new('pays'),
                 yield ArrayField::new('detailCommandes'),
+                yield DateTimeField::new('createdAt'),
+                yield DateTimeField::new('updatedAt'),
             ];
         else // page : index
             return [

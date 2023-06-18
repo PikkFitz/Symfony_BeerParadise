@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -99,6 +100,8 @@ class DetailCommandeCrudController extends AbstractCrudController
                 yield IntegerField::new('quantite'),
                 yield NumberField::new('prixTotal'),
                 yield IntegerField::new('commande'),
+                yield DateTimeField::new('createdAt'),
+                yield DateTimeField::new('updatedAt'),
             ];
         else // page : index
             return [

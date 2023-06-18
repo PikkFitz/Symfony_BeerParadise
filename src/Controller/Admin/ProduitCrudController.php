@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -104,7 +105,9 @@ class ProduitCrudController extends AbstractCrudController
                 TextareaField::new('description'),
                 NumberField::new('prix'),
                 IntegerField::new('stock'),
-                ImageField::new('imageName', 'Image')->setBasePath('/images/produit')
+                ImageField::new('imageName', 'Image')->setBasePath('/images/produit'),
+                DateTimeField::new('createdAt'),
+                DateTimeField::new('updatedAt'),
             ];
         } 
         else // page : index

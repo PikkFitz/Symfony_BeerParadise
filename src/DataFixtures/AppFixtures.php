@@ -91,7 +91,8 @@ class AppFixtures extends Fixture
         for ($i=1; $i <= 5; $i++)  // On génère 5 catégories
         { 
             $categorie = new Categorie();
-            $categorie->setNom('Categorie' . $i);
+            if ($i==1) {$categorie->setNom('Blanches');} if ($i==2) {$categorie->setNom('Blondes');} if ($i==3) {$categorie->setNom('Ambrées');} if ($i==4) {$categorie->setNom('Brunes et noires');} if ($i==5) {$categorie->setNom('Spéciales');}
+            // $categorie->setNom('Categorie' . $i);
             $categorie->setDescription($this->faker->text(200)); // 200 --> Nombre de caractères générés
 
 

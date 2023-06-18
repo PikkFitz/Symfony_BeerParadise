@@ -49,6 +49,7 @@
                                 <a class="dropdown-item" href="{{ path('user.edit', {choosenUser : app.user.id}) }}">Modifier mon profil</a>
                                 <a class="dropdown-item" href="{{ path('user.editPassword', {choosenUser : app.user.id}) }}">Modifier mon mot de passe</a>
                                 <a class="dropdown-item" href="{{ path('adresse.index', {choosenUser : app.user.id}) }}">Mes adresses</a>
+                                <a class="dropdown-item" href="{{ path('historique.index', {choosenUser : app.user.id}) }}">Mon historique de commandes</a>
                                 
                                 {% if 'ROLE_ADMIN' in app.user.roles %}  {# Si l'utilisateur connecté à un rôle Admin #}
 

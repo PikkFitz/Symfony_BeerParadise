@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -93,6 +94,8 @@ class AdresseCrudController extends AbstractCrudController
                 yield TextField::new('codePostal'),
                 yield TextField::new('pays'),
                 yield IntegerField::new('user'),
+                yield DateTimeField::new('createdAt'),
+                yield DateTimeField::new('updatedAt'),
             ];
         else // page : index
             return [

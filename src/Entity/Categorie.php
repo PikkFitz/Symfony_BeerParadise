@@ -56,7 +56,6 @@ class Categorie
      */
     public function __construct()
     {
-        // $this->sousCategories = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
         $this->sousCategories = new ArrayCollection([]);

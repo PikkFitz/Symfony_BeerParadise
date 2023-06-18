@@ -7,6 +7,7 @@ use App\Form\CommandeType;
 use App\Entity\DetailCommande;
 use App\Repository\UserRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\CommandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,8 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Stripe\Stripe;
+use Stripe\Charge;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommandeController extends AbstractController
@@ -66,6 +69,7 @@ class CommandeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) 
         {
             // dd($form->getData());
+            
             // !!!!! COMMANDE !!!!!
             $commande = new Commande;
             $commande->setUser($user);
@@ -96,7 +100,7 @@ class CommandeController extends AbstractController
 
             $manager->flush();
 
-
+            // !!!!!!!!!!  PARTIE A DEPLACER ??? DANS LE PAIEMENTCONTROLLER ???  !!!!!!!!!!
             // !!!!! EMAIL !!!!!
 
             $email = (new TemplatedEmail())
@@ -121,7 +125,7 @@ class CommandeController extends AbstractController
 
             $mailer->send($email);
 
-
+            
             // !!!!! MESSAGE FLASH !!!!!
             $this->addFlash(
                 'success',
@@ -131,7 +135,11 @@ class CommandeController extends AbstractController
             // On supprime le panier de la session
             // $session->remove('panier');
 
-            return $this->redirectToRoute('home.index');
+
+            // return $this->redirectToRoute('home.index', [
+            //     'commande' => $commande,
+            // ]);
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
 
 
@@ -139,6 +147,18 @@ class CommandeController extends AbstractController
             'form' => $form->createView(),
             'listePanier' => $listePanier,
             'total' => $total,
+        ]);
+    }
+
+
+    #[Route('/historique', name: 'historique.index')]
+    public function historiqueIndex(CommandeRepository $repository): Response
+    {
+        $commandes = $repository->findBy(['user' => $this->getUser()]);
+        // dd($commandes);
+
+        return $this->render('pages/commande/commandeHistorique.html.twig', [
+            'commandes' => $commandes,
         ]);
     }
 }

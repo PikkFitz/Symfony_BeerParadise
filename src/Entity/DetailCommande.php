@@ -33,9 +33,25 @@ class DetailCommande
     #[ORM\JoinColumn(nullable: false)]
     private ?Commande $commande = null;
 
+    #[ORM\Column]
+    #[Assert\NotNull()]  // Ne doit pas être nul
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    #[Assert\NotNull()]  // Ne doit pas être nul
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function __construct()
     {
         $this->updatePrixTotal();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[ORM\PrePersist()]
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -102,8 +118,32 @@ class DetailCommande
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
     public function __toString(): string
     {
-        return $this->getId() . " : " . $this->getProduit() . " x" . $this->getQuantite();
+        return "Ligne " . $this->getId() . " : " . $this->getProduit() . " x" . $this->getQuantite();
     }
 }

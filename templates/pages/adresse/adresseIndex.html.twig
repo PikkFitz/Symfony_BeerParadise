@@ -4,23 +4,22 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Mes Adresses</h1>
+        <h1>Mes adresses</h1>
         <hr class="my-2">
 
         <a href="{{path("home.index")}}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
 
-        {# !!!!! MESSAGE FLASH !!!!! #}
+         {# !!!!! MESSAGE FLASH !!!!! #}
         {% for message in app.flashes('success') %}          {# success = Nom de l'alerte  #}
             <div class="alert alert-success mt-4">           {# alert-sucess = Type d'alerte Bootstrap #}
-                <h5>{{ message.info }}</h5>
-                {{message.bonus}}
+                {{ message }}
             </div>
         {% endfor %}
 
-        {% for message in app.flashes('danger') %}          {# danger = Nom de l'alerte  #}
-            <div class="alert alert-danger mt-4">           {# alert-danger = Type d'alerte Bootstrap #}
-                <h5>{{ message.info }}</h5>
-                {{message.bonus}}
+         {# !!!!! MESSAGE FLASH !!!!! #}
+        {% for message in app.flashes('danger') %}          {# success = Nom de l'alerte  #}
+            <div class="alert alert-danger mt-4">           {# alert-sucess = Type d'alerte Bootstrap #}
+                {{ message }}
             </div>
         {% endfor %}
 
@@ -47,8 +46,8 @@
                         <td class="text-center align-middle">{{ adresse.pays }}</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center">
-                                <a href="{{ path('adresse.edit', { id: adresse.id }) }}" class="btn btn-info">Modifier</a>
-                                <a href="{{ path('adresse.delete', { id: adresse.id }) }}" class="btn btn-danger supp">Supprimer</a>
+                                <a href="{{ path('adresse.edit', { id: adresse.id }) }}" class="btn btn-info mx-1">Modifier</a>
+                                <a href="{{ path('adresse.delete', { id: adresse.id }) }}" class="btn btn-danger mx-1 supp ">Supprimer</a>
                             </div>
                         </td>
                     </tr>
@@ -57,7 +56,7 @@
         </table> 
 
 
-        {# Script JS de confirmation pour la suppression d'un ingredient (version "classique")
+        {# Script JS de confirmation pour la suppression d'une adresse (version "classique") #}
         <script> 
         
             const confirmation_supprimer = document.querySelectorAll(".supp");
@@ -68,15 +67,15 @@
 
             function confirmDelete(e)
             {
-                if(!confirm('Voulez-vous supprimer cet ingrédient ?')) 
+                if(!confirm('Voulez-vous supprimer cette adresse ?')) 
                 {
                     e.preventDefault();
                 }
             }
-        </script> #}
+        </script>
 
         {% else %}
-            <p class="mt-4">Il n'y a pas d'adresses enregistrées...</p>
+            <p class="mt-4">Il n'y a pas d'adresse enregistrée...</p>
         {% endif %}
 
         {# Bouton "Ajouter une adresse" #}

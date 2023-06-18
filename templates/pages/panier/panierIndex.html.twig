@@ -39,7 +39,7 @@
             <tbody>
                 {% for item in listePanier %}
                     <tr class="table-secondary">
-                        <th scope="row" class="text-center align-middle"><a href="{{ path('produit.show', {produit: item.produit.id}) }}" class="cardHeader">{{ item.produit.nom }}</a></th>
+                        <th scope="row" class="text-center align-middle"><a href="{{ path('produit.show', {produit: item.produit.id}) }}" class="linkNamePanier">{{ item.produit.nom }}</a></th>
                         <td class="text-center align-middle" style="width: 20%"><a href="{{ path("produit.show", { produit: item.produit.id }) }}">
                             <img style="max-width: 20%" src="{{ vich_uploader_asset(item.produit, 'imageFile') }}" alt="{{ item.produit.nom }}">
                         </a></td>
@@ -54,7 +54,7 @@
                                     <button type="submit" class="btn btn-success" title="Ajouter un article"><i class="fa-solid fa-plus"></i></button>
                                 </form>
                                 <a href="{{path("remove", {id: item.produit.id})}}" class="btn btn-warning" title="Supprimer un article"><i class="fa-solid fa-minus"></i></a>
-                                <a href="{{path("delete", {id: item.produit.id})}}" class="btn btn-danger" title="Supprimer la ligne"><i class="fa-solid fa-trash-can"></i></a>
+                                <a href="{{path("delete", {id: item.produit.id})}}" class="btn btn-danger supp" title="Supprimer la ligne"><i class="fa-solid fa-trash-can"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -74,6 +74,24 @@
             <a href="{{ path('commande.index') }}" class="btn btn-success" title="Passer la commande">Passer la commande &nbsp; <i class="fa-solid fa-cart-shopping"></i></i></a>
         {% endif %}
     </div>
+
+    {# Script JS de confirmation pour la suppression d'une ligne de commande (version "classique") #}
+    <script> 
+    
+        const confirmation_supprimer = document.querySelectorAll(".supp");
+        
+        confirmation_supprimer.forEach(element => {
+            element.addEventListener("click", confirmDelete)
+        });
+
+        function confirmDelete(e)
+        {
+            if(!confirm('Voulez-vous supprimer cette ligne ?')) 
+            {
+                e.preventDefault();
+            }
+        }
+    </script>
 
 {% endblock %}
 

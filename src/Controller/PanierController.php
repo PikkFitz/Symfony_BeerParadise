@@ -112,7 +112,7 @@ class PanierController extends AbstractController
         // !!!!! MESSAGE FLASH !!!!!
         $this->addFlash(
             'danger',
-            '1x ' . $produit->getNom() . 'supprimée du panier'
+            '1x ' . $produit->getNom() . ' supprimée du panier'
         );
 
         return $this->redirectToroute("panier");

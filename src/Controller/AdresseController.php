@@ -15,7 +15,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdresseController extends AbstractController
 {
     #[Route('adresse/', name: 'adresse.index')]
-    #[IsGranted('ROLE_USER')] // Autorise uniquement les personnes ayant le 'ROLE_USER' (utilisateurs connectés)
+    #[Security("is_granted('ROLE_USER') and user === adresse.getUser()")]
+    // Autorise uniquement les personnes ayant le 'ROLE_USER' (utilisateurs connectés) à accéder à la page des adresses 
+    // ET SEULEMENT l'utilisateur à qui "appartiennent" ces adresses
     public function adresse(AdresseRepository $repository): Response
     {
         $adresses = $repository->findBy(['user' => $this->getUser()]);
@@ -29,7 +31,9 @@ class AdresseController extends AbstractController
 
 
     #[Route('adresse/ajout', 'adresse.new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_USER')] // Autorise uniquement les personnes ayant le 'ROLE_USER' (utilisateurs connectés)
+    #[Security("is_granted('ROLE_USER') and user === adresse.getUser()")]
+    // Autorise uniquement les personnes ayant le 'ROLE_USER' (utilisateurs connectés) à accéder à la page d'ajout des adresses 
+    // ET SEULEMENT l'utilisateur à qui "appartiennent" ces adresses
     /**
      * This function show a form to add an address
      *
@@ -56,7 +60,7 @@ class AdresseController extends AbstractController
             // !!!!! MESSAGE FLASH !!!!!
             $this->addFlash(
                 'success',
-                'L\'adresse  "' . $adresse->getNom() . ' à bien été ajoutée !'
+                'L\'adresse  "' . $adresse->getNom() . '" a bien été ajoutée !'
             );
 
             return $this->redirectToRoute('adresse.index');
@@ -98,13 +102,13 @@ class AdresseController extends AbstractController
             // !!!!! MESSAGE FLASH !!!!!
             $this->addFlash(
                 'success',
-                'L\'adresse  "' . $adresse->getNom() . ' à bien été modifiée !'
+                'L\'adresse  "' . $adresse->getNom() . '" a bien été modifiée !'
             );
 
-            return $this->redirectToRoute('ingredient.index');
+            return $this->redirectToRoute('adresse.index');
         }
 
-        return $this->render('pages/ingredient/edit.html.twig', [
+        return $this->render('pages/adresse/adresseEdit.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -129,7 +133,7 @@ class AdresseController extends AbstractController
         // !!!!! MESSAGE FLASH !!!!!
         $this->addFlash(
             'danger',
-            'L\'adresse  "' . $adresse->getNom() . ' à bien été supprimée !'
+            'L\'adresse  "' . $adresse->getNom() . '" a bien été supprimée !'
         );
         
         return $this->redirectToRoute('adresse.index');

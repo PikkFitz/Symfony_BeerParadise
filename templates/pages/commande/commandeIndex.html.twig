@@ -16,11 +16,23 @@
                 </form> #}
                 <a href="{{ path("panier") }}" class="btn btn-primary btn-sm" title="Retour">Retour</a>
 
+                {# {{ form_start(form) }} #}
                 {{ form_start(form) }}
+
 
                 {{ form_row(form.adresses) }}
 
-                <a href="#" class="btn btn-primary btn-sm mt-3" title="Ajouter une adresse">Ajouter une nouvelle adresse</a>
+                <a href="{{ path("adresse.new") }}" class="btn btn-primary btn-sm mt-2" title="Ajouter une adresse">Ajouter une nouvelle adresse</a>
+
+                <div class="mt-2"> 
+                    {{ form_row(form.paiement) }}
+                </div>
+
+                <div class="text-center mt-4"> 
+                    {{ form_row(form.submit) }}
+
+                    {# {{ form_row(form.submit, {'action': path('paiementStripe', {'id': commande.id})}) }} #}
+                </div>
 
             </div>
 
@@ -51,10 +63,6 @@
 
                 <div class="d-flex aling-items-center justify-content-between border-top fs-xl pt-4 mb-4">
                     <span class="fw-semibold">Total : </span><span class="fs-4 fw-semibold ms-2">{{ (total|number_format(2, ',', '.')) }}€</span>
-                </div>
-
-                <div class="text-center"> 
-                    {{ form_row(form.submit) }}
                 </div>
 
                 {{ form_end(form) }}

@@ -89,6 +89,8 @@ class UserCrudController extends AbstractCrudController
                 yield ArrayField::new('roles'),
                 yield ArrayField::new('adresses'),
                 yield ArrayField::new('commandes'),
+                yield DateTimeField::new('createdAt'),
+                yield DateTimeField::new('updatedAt'),
             ];
         else // page : index
             return [

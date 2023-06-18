@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -92,7 +93,9 @@ class SousCategorieCrudController extends AbstractCrudController
                 TextField::new('categorie'),
                 TextareaField::new('description'),
                 ArrayField::new('Produits'),
-                ImageField::new('imageName', 'Image')->setBasePath('/images/sousCategorie')
+                ImageField::new('imageName', 'Image')->setBasePath('/images/sousCategorie'),
+                DateTimeField::new('createdAt'),
+                DateTimeField::new('updatedAt'),
             ];
         } 
         else // page : index

@@ -204,7 +204,7 @@ class Produit
 
     public function __toString(): string
     {
-        return $this->getId() . " : " . $this->getNom();
+        return $this->getId() . " | " . $this->getNom();
     }
 
 }
