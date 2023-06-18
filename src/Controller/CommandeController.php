@@ -15,8 +15,6 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Stripe\Stripe;
-use Stripe\Charge;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommandeController extends AbstractController
@@ -69,77 +67,99 @@ class CommandeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) 
         {
             // dd($form->getData());
-            
-            // !!!!! COMMANDE !!!!!
-            $commande = new Commande;
-            $commande->setUser($user);
-            $adresse = $form->getData()['adresses'];
-            // dd($adresse->getAdresse());
-            $commande->setAdresse($adresse->getAdresse());
-            $commande->setCodePostal($adresse->getCodePostal());
-            $commande->setVille($adresse->getVille());
-            $commande->setPays($adresse->getPays());
-            
-            foreach ($panier as $id => $quantite) 
+
+            if ($form->getData()['paiement'] == 0) 
             {
-                $produit = $produitRepository->find($id); 
+                // Paiement avec Stripe
+                Stripe::setApiKey('sk_test_51NJzliIvExJPa5dbZAeqcqfht6D6Z1D9RmLLAuTh81ho6hW20OjnBoENVQdIkKeu07HfGgpV0o5fPOm5ohkwaBuB00s2H3BTIF');
 
-                $detailCommande = new DetailCommande;
-                $detailCommande->setProduit($produit);
-                $detailCommande->setQuantite($quantite);
-                // $detailCommande->setPrixTotal($produit->getPrix() * $quantite);
-                $detailCommande->setCommande($commande);
+                $charge = Charge::create([
+                    'amount' => $total * 100, // Le montant doit être en cents
+                    'currency' => 'eur', // La devise du montant
+                    'description' => 'Paiement de commande',
+                    // Ajoutez d'autres informations facultatives ici, comme le client, etc.
+                ]);
 
-                $commande->addDetailCommande($detailCommande);
+                if ($charge->status === 'succeeded') {
+                    // Le paiement a réussi, vous pouvez enregistrer les détails de la commande et effectuer d'autres opérations nécessaires
 
-                $manager->persist($detailCommande);
+                    // !!!!! COMMANDE !!!!!
+                    $commande = new Commande;
+                    $commande->setUser($user);
+                    $adresse = $form->getData()['adresses'];
+                    // dd($adresse->getAdresse());
+                    $commande->setAdresse($adresse->getAdresse());
+                    $commande->setCodePostal($adresse->getCodePostal());
+                    $commande->setVille($adresse->getVille());
+                    $commande->setPays($adresse->getPays());
+                    
+                    foreach ($panier as $id => $quantite) 
+                    {
+                        $produit = $produitRepository->find($id); 
+
+                        $detailCommande = new DetailCommande;
+                        $detailCommande->setProduit($produit);
+                        $detailCommande->setQuantite($quantite);
+                        // $detailCommande->setPrixTotal($produit->getPrix() * $quantite);
+                        $detailCommande->setCommande($commande);
+
+                        $commande->addDetailCommande($detailCommande);
+
+                        $manager->persist($detailCommande);
+                    }
+
+
+                    $manager->persist($commande);
+
+                    $manager->flush();
+
+                    // !!!!!!!!!!  PARTIE A DEPLACER ??? DANS LE PAIEMENTCONTROLLER ???  !!!!!!!!!!
+                    // !!!!! EMAIL !!!!!
+
+                    $email = (new TemplatedEmail())
+                    ->from('contact@beerparadise.com')
+                    ->to($user->getEmail())
+                    //->cc('cc@example.com')
+                    //->bcc('bcc@example.com')
+                    //->replyTo('fabien@example.com')
+                    //->priority(Email::PRIORITY_HIGH)
+                    ->subject('Confirmation de commande' . $commande->getId())
+                    // ->text($contact->getMessage())
+                    ->htmlTemplate('emails/commande.html.twig')
+
+                    // pass variables (name => value) to the template
+                    ->context([
+                        'user' => $user,
+                        'adresse' => $adresse,
+                        'commande' => $commande,
+                        'listePanier' => $listePanier,
+                        'total' => $total,
+                    ]);
+
+                    $mailer->send($email);
+
+                    
+                    // !!!!! MESSAGE FLASH !!!!!
+                    $this->addFlash(
+                        'success',
+                        'Commande validée ! Cheers ! :) P.S : Un e-mail de confirmation vous a été envoyé'
+                    );
+
+                    // On supprime le panier de la session
+                    // $session->remove('panier');
+
+                    return $this->redirectToRoute('home.index', [
+                    
+                    ]);
+                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                }
+                 else 
+                {
+                    // Le paiement a échoué, vous pouvez afficher un message d'erreur approprié à l'utilisateur
+                    // ...
+                }
             }
-
-
-            $manager->persist($commande);
-
-            $manager->flush();
-
-            // !!!!!!!!!!  PARTIE A DEPLACER ??? DANS LE PAIEMENTCONTROLLER ???  !!!!!!!!!!
-            // !!!!! EMAIL !!!!!
-
-            $email = (new TemplatedEmail())
-            ->from('contact@beerparadise.com')
-            ->to($user->getEmail())
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Confirmation de commande' . $commande->getId())
-            // ->text($contact->getMessage())
-            ->htmlTemplate('emails/commande.html.twig')
-
-            // pass variables (name => value) to the template
-            ->context([
-                'user' => $user,
-                'adresse' => $adresse,
-                'commande' => $commande,
-                'listePanier' => $listePanier,
-                'total' => $total,
-            ]);
-
-            $mailer->send($email);
-
             
-            // !!!!! MESSAGE FLASH !!!!!
-            $this->addFlash(
-                'success',
-                'Commande validée ! Cheers ! :) P.S : Un e-mail de confirmation vous a été envoyé'
-            );
-
-            // On supprime le panier de la session
-            // $session->remove('panier');
-
-
-            // return $this->redirectToRoute('home.index', [
-            //     'commande' => $commande,
-            // ]);
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
 
 
