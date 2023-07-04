@@ -2,63 +2,81 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;  // Nécessaire pour l'import des images
 use Vich\UploaderBundle\Mapping\Annotation as Vich;  // Nécessaire pour l'import des images
-
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
 #[Vich\Uploadable]  // Nécessaire pour l'import des images
+#[ApiResource(
+    normalizationContext: [ "groups" => ["read:product"]]
+)]
+#[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC', 'nom' => 'ASC'])]  // Pour filtrer les id par ordre décroissant et noms par ordre croissant
 class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["read:product"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
     #[Assert\Length(min: 2, max: 100)]
+    #[Groups(["read:product"])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
+    #[Groups(["read:product"])]
     private ?string $description = null;
 
     #[Vich\UploadableField(mapping: 'produit_images', fileNameProperty: 'imageName')]  // A paramétrer en fonction du ficher config/packages/vich_uploader.yaml
+    #[Groups(["read:product"])]
     private ?File $imageFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["read:product"])]
     private ?string $imageName = null;
 
     #[ORM\Column]
     #[Assert\NotNull()]  // Car ne doit pas être nul
     #[Assert\Positive()]  // Doit être positif
     #[Assert\LessThan(1000)]  // Doit être inférieur à 1000
+    #[Groups(["read:product"])]
     private ?float $prix = null;
 
     #[ORM\Column]
     #[Assert\NotNull()]  // Car ne doit pas être nul
     #[Assert\Positive()]  // Doit être positif
+    #[Groups(["read:product"])]
     private ?int $stock = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull()]  // Car ne doit pas être nul
+    #[Groups(["read:product"])]
     private ?SousCategorie $sousCategorie = null;
 
     #[ORM\Column]
     #[Assert\NotNull()]  // Ne doit pas être nul
+    #[Groups(["read:product"])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     #[Assert\NotNull()]  // Ne doit pas être nul
+    #[Groups(["read:product"])]
     private ?\DateTimeImmutable $updatedAt = null;
 
 

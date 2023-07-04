@@ -70,19 +70,19 @@ class CommandeController extends AbstractController
         {
             // dd($form->getData());
 
-            if ($form->getData()['paiement'] == 0) 
-            {
-                // !!!!! PAIEMENT STRIPE !!!!!
-                Stripe::setApiKey('sk_test_51NJzliIvExJPa5dbZAeqcqfht6D6Z1D9RmLLAuTh81ho6hW20OjnBoENVQdIkKeu07HfGgpV0o5fPOm5ohkwaBuB00s2H3BTIF');
+            // if ($form->getData()['paiement'] == 0) 
+            // {
+            //     // !!!!! PAIEMENT STRIPE !!!!!
+            //     Stripe::setApiKey('sk_test_51NJzliIvExJPa5dbZAeqcqfht6D6Z1D9RmLLAuTh81ho6hW20OjnBoENVQdIkKeu07HfGgpV0o5fPOm5ohkwaBuB00s2H3BTIF');
 
-                $charge = Charge::create([
-                    'amount' => $total * 100, // Montant en centimes
-                    'currency' => 'eur', // Devise du montant
-                    'description' => 'Paiement de commande',
-                    // Ajoutez d'autres informations facultatives ici, comme le client, etc.
-                ]);
+            //     $charge = Charge::create([
+            //         'amount' => $total * 100, // Montant en centimes
+            //         'currency' => 'eur', // Devise du montant
+            //         'description' => 'Paiement de commande',
+            //         // Ajoutez d'autres informations facultatives ici, comme le client, etc.
+            //     ]);
 
-                if ($charge->status === 'succeeded') {
+            //     if ($charge->status === 'succeeded') {
                     // Le paiement a réussi
 
                     // !!!!! COMMANDE !!!!!
@@ -154,22 +154,22 @@ class CommandeController extends AbstractController
                     
                     ]);
                     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                }
-                 else 
-                {
-                    // Le paiement a échoué
+                // }
+                //  else 
+                // {
+                //     // Le paiement a échoué
 
-                    // !!!!! MESSAGE FLASH !!!!!
-                    $this->addFlash(
-                        'danger',
-                        'Erreur lors de la commande... :\'('
-                    );
+                //     // !!!!! MESSAGE FLASH !!!!!
+                //     $this->addFlash(
+                //         'danger',
+                //         'Erreur lors de la commande... :\'('
+                //     );
 
-                    return $this->redirectToRoute('commande.index', [
+                //     return $this->redirectToRoute('commande.index', [
                     
-                    ]);
-                }
-            }
+                //     ]);
+                // }
+            // }
             
         }
 
