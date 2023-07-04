@@ -6,6 +6,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SousCategorieRepository;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\ApiResource;  // Pour API
+use Symfony\Component\Serializer\Annotation\Groups;  // Pour API (pour les groupes)
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
@@ -18,16 +20,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
 #[UniqueEntity('nom')]  // Le nom doit être UNIQUE,  nécéssite le use "UniqueEntity"
 #[Vich\Uploadable]  // Nécessaire pour l'import des images
+#[ApiResource(
+    normalizationContext: [ "groups" => ["read:product"]]
+)]
 class SousCategorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["read:product"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\Length(min: 2, max: 100)]
     #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
+    #[Groups(["read:product"])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]

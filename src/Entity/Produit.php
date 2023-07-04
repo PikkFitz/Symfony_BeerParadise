@@ -4,14 +4,15 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;  // Pour API (Nécessaire pour les filtres et recherches)
+use ApiPlatform\Metadata\ApiResource;  // Pour API
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;  // Pour API (pour types de filtre)
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;  // Pour API (pour types de recherche)
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Groups;  // Pour API (pour les groupes)
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;  // Nécessaire pour l'import des images
 use Vich\UploaderBundle\Mapping\Annotation as Vich;  // Nécessaire pour l'import des images
@@ -23,6 +24,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;  // Nécessaire pour l'impor
     normalizationContext: [ "groups" => ["read:product"]]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC', 'nom' => 'ASC'])]  // Pour filtrer les id par ordre décroissant et noms par ordre croissant
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'price' => 'exact',  'nom' => 'ipartial', 'description' => 'ipartial'])]
 class Produit
 {
     #[ORM\Id]
