@@ -1925,16 +1925,16 @@
         },
         {
             "name": "karser/karser-recaptcha3-bundle",
-            "version": "v0.1.23",
+            "version": "v0.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/karser/KarserRecaptcha3Bundle.git",
-                "reference": "50c35dc7fe78cd197f3be081912ef978e5f8e992"
+                "reference": "f2cc87e214b1bb2fb9e5af9684dd41f9d3bea717"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/karser/KarserRecaptcha3Bundle/zipball/50c35dc7fe78cd197f3be081912ef978e5f8e992",
-                "reference": "50c35dc7fe78cd197f3be081912ef978e5f8e992",
+                "url": "https://api.github.com/repos/karser/KarserRecaptcha3Bundle/zipball/f2cc87e214b1bb2fb9e5af9684dd41f9d3bea717",
+                "reference": "f2cc87e214b1bb2fb9e5af9684dd41f9d3bea717",
                 "shasum": ""
             },
             "require": {
@@ -1949,7 +1949,8 @@
                 "twig/twig": "^2.9|^3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7|^8|^9"
+                "phpunit/phpunit": "^7|^8|^9|^10",
+                "symfony/http-client": "^4.3|^5.0|^6.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -2000,9 +2001,9 @@
             ],
             "support": {
                 "issues": "https://github.com/karser/KarserRecaptcha3Bundle/issues",
-                "source": "https://github.com/karser/KarserRecaptcha3Bundle/tree/v0.1.23"
+                "source": "https://github.com/karser/KarserRecaptcha3Bundle/tree/v0.1.24"
             },
-            "time": "2022-08-30T21:24:44+00:00"
+            "time": "2023-07-03T17:14:18+00:00"
         },
         {
             "name": "monolog/monolog",

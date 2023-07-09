@@ -24,7 +24,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;  // Nécessaire pour l'impor
     normalizationContext: [ "groups" => ["read:product"]]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC', 'nom' => 'ASC'])]  // Pour filtrer les id par ordre décroissant et noms par ordre croissant
-#[ApiFilter(SearchFilter::class, properties: ['id' => 'partial', 'price' => 'exact',  'nom' => 'ipartial', 'description' => 'ipartial'])]
+#[ApiFilter(SearchFilter::class, properties: ['idApi' => 'partial', 'nom' => 'ipartial', 'price' => 'exact', 'description' => 'ipartial'])]
 class Produit
 {
     #[ORM\Id]
@@ -32,6 +32,12 @@ class Produit
     #[ORM\Column]
     #[Groups(["read:product"])]
     private ?int $id = null;
+
+    #[ORM\Column(nullable: true)]
+    // #[Assert\NotNull()]  // Car ne doit pas être null
+    // #[Assert\Positive()]  // Doit être positif
+    #[Groups(["read:product"])]
+    private ?int $idApi = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
@@ -89,12 +95,34 @@ class Produit
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->idApi = $this->getId();
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+     /**
+     * Get the value of idApi
+     */ 
+    public function getIdApi()
+    {
+        return $this->idApi;
+    }
+
+      /**
+     * Set the value of idApi
+     *
+     * @return  self
+     */ 
+    public function setIdApi($idApi)
+    {
+        $this->idApi = $idApi;
+
+        return $this;
+    }
+
 
     public function getNom(): ?string
     {
@@ -220,11 +248,13 @@ class Produit
     public function setUpdatedAtValue()
     {
         $this->updatedAt = new \DateTimeImmutable();
+        $this->idApi = $this->getId();
     }
 
     public function __toString(): string
     {
         return $this->getId() . " | " . $this->getNom();
     }
+
 
 }

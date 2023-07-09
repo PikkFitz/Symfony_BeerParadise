@@ -143,8 +143,6 @@ class AppFixtures extends Fixture
                     ->setPrix(mt_rand(2, 10))
                     ->setStock(mt_rand(1, 10000))
                     ->setSousCategorie($sousCategories[mt_rand(0, count($sousCategories)-1)]);
-
-            
                 
             $produits[] = $produit;
 
