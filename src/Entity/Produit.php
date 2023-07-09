@@ -24,7 +24,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;  // Nécessaire pour l'impor
     normalizationContext: [ "groups" => ["read:product"]]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC', 'nom' => 'ASC'])]  // Pour filtrer les id par ordre décroissant et noms par ordre croissant
-#[ApiFilter(SearchFilter::class, properties: ['id' => 'ipartial', 'price' => 'exact',  'nom' => 'ipartial', 'description' => 'ipartial'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'partial', 'price' => 'exact',  'nom' => 'ipartial', 'description' => 'ipartial'])]
 class Produit
 {
     #[ORM\Id]
