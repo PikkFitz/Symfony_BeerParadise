@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Repository\ProduitRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,7 +45,7 @@ class PanierController extends AbstractController
     }
 
     #[Route('/add', name: 'add')]
-    public function add(Request $request, ProduitRepository $repository, SessionInterface $session): Response
+    public function add(Request $request, ProduitRepository $repository, SessionInterface $session, EntityManagerInterface $manager, RequestStack $requestStack): Response
     {
         // On récupère le panier de la session actuelle
         $panier = $session->get("panier", []);  // Soit la session vaut "panier", soit un tableau vide
@@ -54,7 +56,7 @@ class PanierController extends AbstractController
 
         // On récupère la valeur de l'input "quantite"
         $quantite = $request->request->get('quantite', 1);  // 1 : Valeur minimale retournée si null
-
+        
         // On vérifie si le Produit existe déjà dans notre Panier
         if (isset($panier[$id])) 
         {
@@ -67,24 +69,53 @@ class PanierController extends AbstractController
             $panier[$id] = $quantite;
         }
 
-        // On sauvegarde le Panier dans la session
-        $session->set('panier', $panier);
+        // dd($quantite);
+        // dd($produit->getStock());
 
-        // !!!!! MESSAGE FLASH !!!!!
-        $this->addFlash(
-            'success',
-            'Ajout au panier : '. $quantite . ' x ' . $produit->getNom()
-        );
-        
-        // $referer trouve l'URL de la page précédente
-        // Quand on clic sur le bouton d'ajout au panier, on va sur la route '/add/{id}'
-        // Puis, avec return $this->redirect($referer); on revient sur la page sur laquelle on était (comme si on ne changeait pas de page)
-        $referer = $request->headers->get('referer');
-        return $this->redirect($referer);
-    }
+        $stock = $produit->getStock();
+
+        // On vérifie que la quantité de produit est en stock
+        if($quantite > $stock)
+        {
+             // !!!!! MESSAGE FLASH !!!!!
+             $this->addFlash(
+                'danger',
+                'Stock de produit "' . $produit->getNom() . '" insuffisant pour la quantité ('. $quantite . ') demandée...'
+            );
+
+            $currentRequest = $requestStack->getCurrentRequest();
+            $currentUrl = $currentRequest->getUri();
+
+            // Redirection vers l'URL actuelle
+            return new RedirectResponse($currentUrl);
+        }
+        else
+        {
+            // On sauvegarde le Panier dans la session
+            $session->set('panier', $panier);
+
+            // On enlève du stock la quantité de produit ajoutée au panier 
+            $produit->setStock(($produit->getStock()) - $quantite); 
+
+            $manager->persist($produit);
+            $manager->flush();
+
+            // !!!!! MESSAGE FLASH !!!!!
+            $this->addFlash(
+                'success',
+                'Ajout au panier : '. $quantite . ' x ' . $produit->getNom()
+            );
+            
+            // $referer trouve l'URL de la page précédente
+            // Quand on clic sur le bouton d'ajout au panier, on va sur la route '/add/{id}'
+            // Puis, avec return $this->redirect($referer); on revient sur la page sur laquelle on était (comme si on ne changeait pas de page)
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
+        }
+}
 
     #[Route('/remove/{id}', name: 'remove')]
-    public function remove(Produit $produit, SessionInterface $session): Response
+    public function remove(Produit $produit, SessionInterface $session, EntityManagerInterface $manager): Response
     {
         // On récupère le panier de la session actuelle
         $panier = $session->get("panier", []);  // Soit la session vaut "panier", soit un tableau vide
@@ -106,6 +137,12 @@ class PanierController extends AbstractController
             }
         }
 
+        // On rajoute au stock 1 produit retiré du panier (car le bouton supprime les produits 1 par 1)
+        $produit->setStock(($produit->getStock()) + 1); 
+
+        $manager->persist($produit);
+        $manager->flush();
+
         // On sauvegarde le Panier dans la session
         $session->set('panier', $panier);
 
@@ -119,7 +156,7 @@ class PanierController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'delete')]
-    public function delete(Produit $produit, SessionInterface $session): Response
+    public function delete(Produit $produit, SessionInterface $session, EntityManagerInterface $manager): Response
     {
         // On récupère le panier de la session actuelle
         $panier = $session->get("panier", []);  // Soit la session vaut "panier", soit un tableau vide
@@ -127,12 +164,20 @@ class PanierController extends AbstractController
         $id = $produit->getId();
 
         // On vérifie si le Produit existe déjà dans notre Panier
-        // Si oui, alors +1 sur la qantité du Produit
-        // Si non, alors on ajoute le Produit au Panier avec la quantité = 1
         if (isset($panier[$id])) 
         {
+            // On récupère la quantité de Produit dans le Panier
+            $quantite = $panier[$id]; 
+
             unset($panier[$id]);
+
+            // On rajoute au stock la quantité de produit retirée du panier 
+            $produit->setStock(($produit->getStock()) + $quantite); 
+
+            $manager->persist($produit);
+            $manager->flush();
         }
+
 
         // On sauvegarde le Panier dans la session
         $session->set('panier', $panier);
