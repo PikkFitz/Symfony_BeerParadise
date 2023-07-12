@@ -14,7 +14,6 @@ use Symfony\Component\Serializer\Annotation\Groups;  // Pour API (pour les group
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;  // Pour API (pour types de filtre)
 use Symfony\Component\HttpFoundation\File\File;  // Nécessaire pour l'import des images
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;  // Pour API (pour types de recherche)
-use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;  // Pour API (pour les recherches d'attributs numériques (ex: id))
 use Vich\UploaderBundle\Mapping\Annotation as Vich;  // Nécessaire pour l'import des images
 use ApiPlatform\Metadata\ApiFilter;  // Pour API (Nécessaire pour les filtres et recherches)
 
@@ -25,8 +24,7 @@ use ApiPlatform\Metadata\ApiFilter;  // Pour API (Nécessaire pour les filtres e
     normalizationContext: [ "groups" => ["read:product"]]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC', 'nom' => 'ASC'])]  // Pour filtrer les id par ordre décroissant et noms par ordre croissant
-#[ApiFilter(SearchFilter::class, properties: ['nom' => 'ipartial', 'description' => 'ipartial'])]
-#[ApiFilter(NumericFilter::class, properties: ['id', 'price'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'partial', 'price' => 'exact', 'nom' => 'ipartial', 'description' => 'ipartial'])]
 class Produit
 {
     #[ORM\Id]

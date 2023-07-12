@@ -10,7 +10,7 @@ Accept: application/json
 ###
 GET http://localhost:8000/api/produits?nom=a
 ### 
-GET http://localhost:8000/api/produits?idApi=1
+GET http://localhost:8000/api/produits?id=1
 Accept: application/json
 
 
