@@ -1,1 +1,20 @@
 GET https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata
+
+
+###
+
+
+GET http://localhost:8000/api/produits
+Accept: application/json
+
+###
+GET http://localhost:8000/api/produits?nom=a
+### 
+GET http://localhost:8000/api/produits?idApi=1
+Accept: application/json
+
+
+###
+j'ai une api liée à mon site pour me retourner des produits : 
+
+Quand je fais GET http://localhost:8000/api/produits?nom=a, j'obtiens bien des résultats avec les produits ayant un a dans leur nom. Mais quand je fais GET http://localhost:8000/api/produits?idApi=1, j'obtiens 0 résultat, pourtant, j'ai bien des produits avec un 1 contenu dans leur idApi

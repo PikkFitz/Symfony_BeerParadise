@@ -53,6 +53,7 @@ class PanierController extends AbstractController
         $id = $request->request->get('id');
 
         $produit = $repository->findOneBy(['id' => $id]);
+        // dd($produit);
 
         // On récupère la valeur de l'input "quantite"
         $quantite = $request->request->get('quantite', 1);  // 1 : Valeur minimale retournée si null
@@ -83,11 +84,10 @@ class PanierController extends AbstractController
                 'Stock de produit "' . $produit->getNom() . '" insuffisant pour la quantité ('. $quantite . ') demandée...'
             );
 
-            $currentRequest = $requestStack->getCurrentRequest();
-            $currentUrl = $currentRequest->getUri();
 
             // Redirection vers l'URL actuelle
-            return new RedirectResponse($currentUrl);
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
         }
         else
         {

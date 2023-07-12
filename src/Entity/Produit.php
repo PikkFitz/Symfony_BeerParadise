@@ -4,18 +4,19 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiFilter;  // Pour API (Nécessaire pour les filtres et recherches)
-use ApiPlatform\Metadata\ApiResource;  // Pour API
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;  // Pour API (pour types de filtre)
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;  // Pour API (pour types de recherche)
-
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Annotation\Groups;  // Pour API (pour les groupes)
+use ApiPlatform\Metadata\ApiResource;  // Pour API
 use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Component\Serializer\Annotation\Groups;  // Pour API (pour les groupes)
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;  // Pour API (pour types de filtre)
 use Symfony\Component\HttpFoundation\File\File;  // Nécessaire pour l'import des images
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;  // Pour API (pour types de recherche)
+use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;  // Pour API (pour les recherches d'attributs numériques (ex: id))
 use Vich\UploaderBundle\Mapping\Annotation as Vich;  // Nécessaire pour l'import des images
+use ApiPlatform\Metadata\ApiFilter;  // Pour API (Nécessaire pour les filtres et recherches)
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ORM\HasLifecycleCallbacks]  // Nécessaire pour la mettre à jour la date de mofification "setUpdatedAtValue()"
@@ -24,7 +25,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;  // Nécessaire pour l'impor
     normalizationContext: [ "groups" => ["read:product"]]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC', 'nom' => 'ASC'])]  // Pour filtrer les id par ordre décroissant et noms par ordre croissant
-#[ApiFilter(SearchFilter::class, properties: ['idApi' => 'partial', 'nom' => 'ipartial', 'price' => 'exact', 'description' => 'ipartial'])]
+#[ApiFilter(SearchFilter::class, properties: ['nom' => 'ipartial', 'description' => 'ipartial'])]
+#[ApiFilter(NumericFilter::class, properties: ['id', 'price'])]
 class Produit
 {
     #[ORM\Id]
@@ -32,12 +34,6 @@ class Produit
     #[ORM\Column]
     #[Groups(["read:product"])]
     private ?int $id = null;
-
-    #[ORM\Column(nullable: true)]
-    // #[Assert\NotNull()]  // Car ne doit pas être null
-    // #[Assert\Positive()]  // Doit être positif
-    #[Groups(["read:product"])]
-    private ?int $idApi = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank()]  // Car ne doit pas être vide (ni null)
@@ -95,32 +91,11 @@ class Produit
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
-        $this->idApi = $this->getId();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-     /**
-     * Get the value of idApi
-     */ 
-    public function getIdApi()
-    {
-        return $this->idApi;
-    }
-
-      /**
-     * Set the value of idApi
-     *
-     * @return  self
-     */ 
-    public function setIdApi($idApi)
-    {
-        $this->idApi = $idApi;
-
-        return $this;
     }
 
 
@@ -248,7 +223,6 @@ class Produit
     public function setUpdatedAtValue()
     {
         $this->updatedAt = new \DateTimeImmutable();
-        $this->idApi = $this->getId();
     }
 
     public function __toString(): string
