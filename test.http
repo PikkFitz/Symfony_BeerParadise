@@ -10,9 +10,21 @@ Accept: application/json
 ###
 GET http://localhost:8000/api/produits?nom=a
 ### 
-GET http://localhost:8000/api/produits?id=1
+GET http://localhost:8000/api/produits?&id=01
 Accept: application/json
 
+###
+POST https://pierre.amorce.org/api/produits
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nom": "string",
+  "description": "string",
+  "prix": 999,
+  "stock": 1,
+  "sousCategorie": "/api/sous_categories/201"
+}
 
 ###
 j'ai une api liée à mon site pour me retourner des produits : 
